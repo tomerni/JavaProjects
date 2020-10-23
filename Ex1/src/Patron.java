@@ -1,21 +1,21 @@
 public class Patron {
 
-    /** The first name of the patrom */
+    /** The first name of the patron */
     final String firstName;
 
-    /** The last name of the patrom */
+    /** The last name of the patron */
     final String lastName;
 
-    /** The comic tendency of the patrom */
+    /** The comic tendency of the patron */
     final int patronComicTendency;
 
-    /** The dramatic tendency of the patrom */
+    /** The dramatic tendency of the patron */
     final int patronDramaticTendency;
 
-    /** The educational tendency of the patrom */
+    /** The educational tendency of the patron */
     final int patronEducationalTendency;
 
-    /** The enjoyment threshold of the patrom */
+    /** The enjoyment threshold of the patron */
     final int enjoymentThreshold;
 
     /*----=  Constructors  =-----*/

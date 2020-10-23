@@ -21,7 +21,7 @@ class Book {
     /** The educational value of this book. */
     int educationalValue;
 
-    /** The id of the current borrowe of this book. */
+    /** The id of the current borrow of this book. */
     int currentBorrowerId = -1;
 
     /*----=  Constructors  =-----*/
@@ -50,7 +50,7 @@ class Book {
     /**
      * Returns a string representation of the book, which is a sequence
      * of the title, author, year of publication and the total literary value of the book, separated by
-     * commas, inclosed in square brackets. For example, if the book is
+     * commas, closed in square brackets. For example, if the book is
      * titled "Monkey Feet", was written by Ernie Douglas, published in 1987 and has a comic value of 7,
      * dramatic value of 3 and an educational value of 1, this method will return the string:
      * "[MonkeyFeet,Ernie Douglas,1987,11]"
