@@ -65,6 +65,6 @@ public class Patron {
      * @return true of this patron will enjoy the given book, false otherwise.
      */
     boolean willEnjoyBook(Book book){
-        return getBookScore(book) >= enjoymentThreshold;
+        return getBookScore(book) > enjoymentThreshold;
     }
 }
