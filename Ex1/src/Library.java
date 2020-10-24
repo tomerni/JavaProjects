@@ -82,7 +82,7 @@ public class Library {
      */
     int getBookId(Book book){
         for(int i = 0; i <= bookCounter; i++){
-            if(bookArchive[i].equals(book)){
+            if(bookArchive[i] == book){
                 return i;
             }
         }
@@ -136,7 +136,7 @@ public class Library {
      */
     int getPatronId(Patron patron){
         for(int i = 0; i <= patronCapacity; i++){
-            if(patronArr[i].equals(patron)){
+            if(patronArr[i] == patron){
                 return i;
             }
         }
