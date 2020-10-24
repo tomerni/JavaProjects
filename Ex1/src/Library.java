@@ -61,11 +61,11 @@ public class Library {
      * book was already in the library; a negative number otherwise.
      */
     int addBookToLibrary(Book book){
-        if(bookCounter + 1 >= bookCapacity) {
+        int tempId = getBookId(book);
+        if(bookCounter + 1 > bookCapacity && tempId == -1) {
             return -1;
         }
-        int tempId = getBookId(book);
-        if(tempId == -1) {
+        else if(tempId == -1) {
             bookArchive[bookCounter] = book;
             bookCounter++;
             return bookCounter - 1;
@@ -81,7 +81,7 @@ public class Library {
      * @return a non-negative id number of the given book if he is owned by this library, -1 otherwise.
      */
     int getBookId(Book book){
-        for(int i = 0; i <= bookCounter; i++){
+        for(int i = 0; i < bookCounter; i++){
             if(bookArchive[i] == book){
                 return i;
             }
@@ -105,12 +105,12 @@ public class Library {
      * if the patron was already registered. a negative number otherwise.
      */
     int registerPatronToLibrary(Patron patron){
-        if(patronCapacityCounter + 1 >= patronCapacity){
+        int tempId = getPatronId(patron);
+        if(patronCapacityCounter + 1 > patronCapacity && tempId == -1){
             return -1;
         }
-        int tempId = getPatronId(patron);
-        if(tempId == -1) {
-            patronArr[patronCapacity] = patron;
+        else if(tempId == -1) {
+            patronArr[patronCapacityCounter] = patron;
             patronCapacityCounter++;
             return patronCapacityCounter - 1;
         }
@@ -135,7 +135,7 @@ public class Library {
      * @return a non-negative id number of the given patron if he is registered to this library, -1 otherwise.
      */
     int getPatronId(Patron patron){
-        for(int i = 0; i <= patronCapacity; i++){
+        for(int i = 0; i < patronCapacity; i++){
             if(patronArr[i] == patron){
                 return i;
             }
@@ -153,7 +153,7 @@ public class Library {
      */
     boolean borrowBook(int bookId, int patronId){
        if(!isBookIdValid(bookId) || !isPatronIdValid(patronId) || bookArchive[bookId].currentBorrowerId != -1 ||
-          patronBorrowCounter[patronId] + 1 >= borrowedBooksCapacity ||
+          patronBorrowCounter[patronId] + 1 > borrowedBooksCapacity ||
                !patronArr[patronId].willEnjoyBook(bookArchive[bookId])){
            return false;
        }
@@ -185,7 +185,7 @@ public class Library {
         if(isPatronIdValid(patronId)) {
             Patron curPatron = patronArr[patronId];
             for (Book b : bookArchive) {
-                if (curPatron.getBookScore(b) > max && b.currentBorrowerId == -1) {
+                if (curPatron.willEnjoyBook(b) && curPatron.getBookScore(b) > max && b.currentBorrowerId == -1) {
                     max = curPatron.getBookScore(b);
                     selectedBook = b;
                 }
