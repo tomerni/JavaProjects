@@ -1,3 +1,6 @@
+/**
+ * This class represents a library patron that has a name and assigns values to different literary aspects of books.
+ */
 public class Patron {
 
     /** The first name of the patron */
