@@ -184,7 +184,8 @@ public class Library {
         Book selectedBook = null;
         if(isPatronIdValid(patronId)) {
             Patron curPatron = patronArr[patronId];
-            for (Book b : bookArchive) {
+            for (int i = 0; i < bookCounter; i++) {
+                Book b = bookArchive[i];
                 if (curPatron.willEnjoyBook(b) && curPatron.getBookScore(b) > max && b.currentBorrowerId == -1) {
                     max = curPatron.getBookScore(b);
                     selectedBook = b;
