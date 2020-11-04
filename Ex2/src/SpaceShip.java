@@ -23,18 +23,11 @@ public class SpaceShip {
 
     protected int SHOT_COUNTER = 0;
 
-
-    SpaceShip() {
-
-    }
-
     /**
-     * Does the actions of this ship for this round.
-     * This is called once per round by the SpaceWars game driver.
-     * @param game the game object to which this ship belongs.
+     * The implementation of this function is overridden in every space ship that inherits
+     * this class
      */
     public void doAction(SpaceWars game) {
-
     }
 
     /**

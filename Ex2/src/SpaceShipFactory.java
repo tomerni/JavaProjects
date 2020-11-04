@@ -33,5 +33,5 @@ public class SpaceShipFactory {
             }
         }
         return list;
-        }
     }
+}
