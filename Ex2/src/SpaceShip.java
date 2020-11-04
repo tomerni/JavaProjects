@@ -26,6 +26,7 @@ public class SpaceShip {
     /**
      * The implementation of this function is overridden in every space ship that inherits
      * this class
+     * @param game the current game object
      */
     public void doAction(SpaceWars game) {
     }
