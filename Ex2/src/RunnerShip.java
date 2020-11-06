@@ -1,7 +1,7 @@
 /**
  * Implementation of the RunnerShip class
  */
-public class RunnerShip extends SpaceShip {
+public class RunnerShip extends DefenderShip {
 
     /**
      * Does the actions of this ship for this round.
@@ -17,17 +17,5 @@ public class RunnerShip extends SpaceShip {
         }
         moveFromEnemy(angleFromClosest);
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
-    }
-
-    /**
-     * Moves the space ship from the nearest enemy
-     * @param angle the angle to the enemy
-     */
-    private void moveFromEnemy(double angle) {
-        if (angle >= 0) {
-            POSITION.move(true, -1);
-        } else {
-            POSITION.move(true, 1);
-        }
     }
 }

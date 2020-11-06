@@ -1,7 +1,7 @@
 /**
  * Implementation of the SpecialShip class
  */
-public class SpecialShip extends SpaceShip {
+public class SpecialShip extends AttackerShip {
 
     /**
      * Does the actions of this ship for this round.
@@ -34,32 +34,6 @@ public class SpecialShip extends SpaceShip {
             POSITION.move(true, -1);
         } else {
             POSITION.move(true, 1);
-        }
-    }
-
-    /**
-     * Checks if the ship need to open the shield
-     * @param dist the distance from the enemy
-     */
-    private void isShield(double dist) {
-        if (dist <= 0.08) {
-            shieldOn();
-        } else {
-            IS_SHIELD = false;
-        }
-    }
-
-    /**
-     * Checks if the ship needs to fire
-     * @param angle the angle to the enemy
-     * @param game the game Object
-     */
-    private void isFire(double angle, SpaceWars game) {
-        if (SHOT_COUNTER > 0) {
-            SHOT_COUNTER--;
-        }
-        if (Math.abs(angle) < 0.21) {
-            fire(game);
         }
     }
 }

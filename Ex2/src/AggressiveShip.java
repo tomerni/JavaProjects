@@ -1,7 +1,7 @@
 /**
  * Implementation of the AggressiveShip class
  */
-public class AggressiveShip extends SpaceShip {
+public class AggressiveShip extends AttackerShip {
 
     /**
      * Does the actions of this ship for this round.
@@ -14,19 +14,5 @@ public class AggressiveShip extends SpaceShip {
         moveTowardEnemy(angleFromClosest);
         isFire(angleFromClosest, game);
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
-    }
-
-    /**
-     * Checks if the ship needs to fire
-     * @param angle the angle to the enemy
-     * @param game the game Object
-     */
-    private void isFire(double angle, SpaceWars game) {
-        if (SHOT_COUNTER > 0) {
-            SHOT_COUNTER--;
-        }
-        if (Math.abs(angle) < 0.21) {
-            fire(game);
-        }
     }
 }

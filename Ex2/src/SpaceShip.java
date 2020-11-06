@@ -139,18 +139,6 @@ public class SpaceShip {
     }
 
     /**
-     * Moves the space ship toward the nearest enemy
-     * @param angle the angle to the enemy
-     */
-    protected void moveTowardEnemy(double angle) {
-        if (angle >= 0) {
-            POSITION.move(true, 1);
-        } else {
-            POSITION.move(true, -1);
-        }
-    }
-
-    /**
      * @param curEnergy the current energy
      * @return the new energy
      */
