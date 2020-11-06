@@ -23,7 +23,7 @@ public class DrunkardShip extends SpaceShip {
      * @param game the game object to which this ship belongs.
      */
     public void doAction(SpaceWars game) {
-        if (turnsCounter % 100 == modToJump) {
+        if (turnsCounter % 1000 == modToJump) {
             teleport();
         }
         if (leftOrRight == 1) {
