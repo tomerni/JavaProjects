@@ -38,7 +38,7 @@ public class SpaceShipFactory {
             }
             return null;
         }
-        if(humanCount < 1){
+        if(humanCount > 1){
             return null;
         }
         return list;
