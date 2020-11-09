@@ -34,10 +34,12 @@ public class AttackerShip extends SpaceShip {
      * @param angle the angle to the enemy
      */
     protected void moveTowardEnemy(double angle) {
-        if (angle >= 0) {
+        if (angle > 0) {
             POSITION.move(true, 1);
-        } else {
+        } else if (angle < 0) {
             POSITION.move(true, -1);
+        } else {
+            POSITION.move(true, 0);
         }
     }
 }

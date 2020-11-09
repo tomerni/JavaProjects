@@ -7,10 +7,12 @@ public class DefenderShip extends SpaceShip{
      * @param angle the angle to the enemy
      */
     protected void moveFromEnemy(double angle) {
-        if (angle >= 0) {
+        if (angle > 0) {
             POSITION.move(true, -1);
-        } else {
+        } else if (angle < 0) {
             POSITION.move(true, 1);
+        } else {
+            POSITION.move(true, 0);
         }
     }
 }
