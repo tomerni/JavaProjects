@@ -10,7 +10,6 @@ public class SpecialShip extends AttackerShip {
      */
     public void doAction(SpaceWars game) {
         SpaceShip closestShip = game.getClosestShipTo(this);
-        double distFromClosest = POSITION.distanceFrom(closestShip.getPhysics());
         double angleFromClosest = POSITION.angleTo(closestShip.getPhysics());
         if (HEALTH == 1) {
             teleport();
@@ -20,7 +19,10 @@ public class SpecialShip extends AttackerShip {
         } else {
             moveTowardEnemy(angleFromClosest);
         }
+        closestShip = game.getClosestShipTo(this);
+        double distFromClosest = POSITION.distanceFrom(closestShip.getPhysics());
         isShield(distFromClosest);
+        angleFromClosest = POSITION.angleTo(closestShip.getPhysics());
         isFire(angleFromClosest, game);
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
     }

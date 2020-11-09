@@ -12,6 +12,8 @@ public class AggressiveShip extends AttackerShip {
         SpaceShip closestShip = game.getClosestShipTo(this);
         double angleFromClosest = POSITION.angleTo(closestShip.getPhysics());
         moveTowardEnemy(angleFromClosest);
+        closestShip = game.getClosestShipTo(this);
+        angleFromClosest = POSITION.angleTo(closestShip.getPhysics());
         isFire(angleFromClosest, game);
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
     }

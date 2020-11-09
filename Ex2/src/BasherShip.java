@@ -10,9 +10,10 @@ public class BasherShip extends AttackerShip {
      */
     public void doAction(SpaceWars game) {
         SpaceShip closestShip = game.getClosestShipTo(this);
-        double distFromClosest = POSITION.distanceFrom(closestShip.getPhysics());
         double angleFromClosest = POSITION.angleTo(closestShip.getPhysics());
         moveTowardEnemy(angleFromClosest);
+        closestShip = game.getClosestShipTo(this);
+        double distFromClosest = POSITION.distanceFrom(closestShip.getPhysics());
         isShield(distFromClosest);
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
     }
