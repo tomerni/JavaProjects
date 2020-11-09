@@ -41,7 +41,10 @@ public class SpaceShip {
         } else {
             HEALTH--;
             MAX_ENERGY -= 10;
-            if (MAX_ENERGY > CUR_ENERGY) {
+            if (MAX_ENERGY < 0) {
+                MAX_ENERGY = 0;
+            }
+            if (MAX_ENERGY < CUR_ENERGY) {
                 CUR_ENERGY = MAX_ENERGY;
             }
         }
@@ -85,7 +88,10 @@ public class SpaceShip {
                 HEALTH--;
             }
             MAX_ENERGY -= 10;
-            if (MAX_ENERGY > CUR_ENERGY) {
+            if (MAX_ENERGY < 0) {
+                MAX_ENERGY = 0;
+            }
+            if (MAX_ENERGY < CUR_ENERGY) {
                 CUR_ENERGY = MAX_ENERGY;
             }
         }
