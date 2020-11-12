@@ -10,17 +10,22 @@ import oop.ex2.*;
  */
 public class SpaceShip {
 
-
+    /** The position object of the ship */
     protected SpaceShipPhysics POSITION = new SpaceShipPhysics();
 
+    /** The max energy of the ship */
     protected int MAX_ENERGY = 210;
 
+    /** The health of the ship */
     protected int HEALTH = 22;
 
+    /** The current energy of the ship */
     protected int CUR_ENERGY = 190;
 
+    /** Flag that tells if the ship's shield is on */
     protected boolean IS_SHIELD = false;
 
+    /** The shot counter variable */
     protected int SHOT_COUNTER = 0;
 
     /**

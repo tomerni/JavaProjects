@@ -45,7 +45,7 @@ public class HumanControlledShip extends SpaceShip {
         return GameGUI.SPACESHIP_IMAGE;
     }
 
-    /**
+    /*
      * moves the space ship according to the pressed keys
      * @param game the game Object
      */

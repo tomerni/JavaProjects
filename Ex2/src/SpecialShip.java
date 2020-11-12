@@ -27,7 +27,7 @@ public class SpecialShip extends AttackerShip {
         CUR_ENERGY = updateEnergy(CUR_ENERGY);
     }
 
-    /**
+    /*
      * Moves the space ship from the nearest enemy
      * @param angle the angle to the enemy
      */
