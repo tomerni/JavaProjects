@@ -1,12 +1,21 @@
 import oop.ex3.spaceship.*;
 import org.junit.*;
-import org.junit.matchers.JUnitMatchers;
+
 import static org.junit.Assert.*;
 
 public class LongTermTest {
 	static LongTermStorage ltsTest = new LongTermStorage();
 	static Item[] allItems = ItemFactory.createAllLegalItems();
-	static Item item4 = allItems[3]; // spores engine, 10
+	static Item item4; // spores engine, 10
+
+	@BeforeClass
+	public static void generatingItems() {
+		for (Item i : allItems) {
+			if (i.getType().equals("spores engine")) {
+				item4 = i;
+			}
+		}
+	}
 
 	@Test
 	public void testAddItem() {

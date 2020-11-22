@@ -25,8 +25,7 @@ public class LongTermStorage {
 			leftCapacity -= overallWeight;
 			curItems.put(item.getType(), n);
 			return 0;
-		}
-		else {
+		} else {
 			System.out.printf("Error: Your request cannot be completed at this time. Problem: no room for " +
 							  "%d items of type %s\n", n, item.getType());
 			return -1;

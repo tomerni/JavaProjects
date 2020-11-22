@@ -1,4 +1,5 @@
 import java.util.Comparator;
+
 import oop.ex3.searchengine.*;
 
 public class SortByRating implements Comparator<Hotel> {

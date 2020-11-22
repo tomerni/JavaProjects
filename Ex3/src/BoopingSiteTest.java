@@ -47,11 +47,11 @@ public class BoopingSiteTest {
 
 		System.out.print(hotels.length);
 
-		int j=0;
+		int j = 0;
 		for (Hotel i : hot) {
 			System.out.print(i.getPropertyName() + " " + Math.sqrt(Math.pow(i.getLongitude() - 77, 2) +
 																   Math.pow(i.getLatitude() - 32, 2)) +
-							 " " + i.getNumPOI()+ " " + j +"\n");
+							 " " + i.getNumPOI() + " " + j + "\n");
 			j++;
 		}
 

@@ -15,8 +15,6 @@ public class Locker {
 
 	private HashMap<String, Integer> curItems;
 
-	private Map<Locker, Locker[]> lockerConstraints;
-
 	Locker(LongTermStorage lts1, int capacity1, Item[][] constraints1) {
 		capacity = capacity1;
 		constraints = constraints1;
@@ -25,13 +23,12 @@ public class Locker {
 		curItems = new HashMap<String, Integer>();
 	}
 
-
 	private int addAlsoToLTS(Item item, int n, int newItemCount) {
 		int numberOfValidItemsToAdd = (int) (0.2 * capacity / item.getVolume());
 		int itemsToLts = newItemCount - numberOfValidItemsToAdd;
 		if (lts.getAvailableCapacity() < itemsToLts * item.getVolume()) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for " +
-							   Integer.toString(n) + " items of type " + item.getType());
+			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for" +
+							   " " + n + " items of type " + item.getType());
 			return -1;
 		} else {
 			lts.addItem(item, itemsToLts);
@@ -70,8 +67,8 @@ public class Locker {
 		}
 		int overallWeight = n * item.getVolume();
 		if (overallWeight > leftCapacity) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for " +
-							  Integer.toString(n) + " items of type " + item.getType());
+			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for" +
+							   " " + n + " items of type " + item.getType());
 			return -1;
 		}
 		int newItemCount = getItemCount(item.getType()) + n;
@@ -98,6 +95,10 @@ public class Locker {
 	}
 
 	public int removeItem(Item item, int n) {
+		if (item == null) {
+			System.out.println("Error: Your request cannot be completed at this time");
+			return -1;
+		}
 		if (n < 0) {
 			System.out.println("Error: Your request cannot be completed at this time. Problem: the locker " +
 							   "cannot remove a negative number of items of type " + item.getType());
@@ -105,7 +106,8 @@ public class Locker {
 		}
 		if (!curItems.containsKey(item.getType()) | curItems.get(item.getType()) < n) {
 			System.out.println("Error: Your request cannot be completed at this time. Problem: the locker " +
-							   "does not contain " + Integer.toString(n) + " items of type " + item.getType());
+							   "does not contain " + n + " items of type " +
+							   item.getType());
 			return -1;
 		} else {
 			return validRemove(item, n);

@@ -1,5 +1,6 @@
 import oop.ex3.spaceship.*;
 import org.junit.*;
+
 import static org.junit.Assert.*;
 
 
@@ -8,11 +9,33 @@ public class LockerTest {
 	static LongTermStorage ltsTest = new LongTermStorage();
 	static Item[] allItems = ItemFactory.createAllLegalItems();
 	static Item[][] cons = ItemFactory.getConstraintPairs();
-	static Item item1 = allItems[0]; // baseball, 2
-	static Item item2 = allItems[1]; // helmet size 1, 3
-	static Item item3 = allItems[2]; // helmet size 3, 5
-	static Item item4 = allItems[3]; // spores engine, 10
-	static Item item5 = allItems[4]; // football, 4
+	static Item item1; // baseball, 2
+	static Item item2; // helmet size 1, 3
+	static Item item3; // helmet size 3, 5
+	static Item item4; // spores engine, 10
+	static Item item5; // football, 4
+
+	@BeforeClass
+	public static void generatingItems() {
+		for (Item i : allItems) {
+			if (i.getType().equals("baseball bat")) {
+				item1 = i;
+			}
+			if (i.getType().equals("helmet, size 1")) {
+				item2 = i;
+			}
+			if (i.getType().equals("helmet, size 3")) {
+				item3 = i;
+			}
+			if (i.getType().equals("spores engine")) {
+				item4 = i;
+			}
+			if (i.getType().equals("football")) {
+				item5 = i;
+			}
+		}
+	}
+
 
 	@Test
 	public void testAddItemSmall() {
@@ -117,10 +140,10 @@ public class LockerTest {
 	@Test
 	public void constraintsTest() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
-		bigLocker.addItem(item1,1); //baseball bat
-		assertEquals(-2, bigLocker.addItem(item5,1)); //adding football, contradiction
+		bigLocker.addItem(item1, 1); //baseball bat
+		assertEquals(-2, bigLocker.addItem(item5, 1)); //adding football, contradiction
 		assertEquals(0, bigLocker.getItemCount(item5.getType()));
-		assertEquals(0, bigLocker.addItem(item3,1)); //adding helmet, not a contradiction
+		assertEquals(0, bigLocker.addItem(item3, 1)); //adding helmet, not a contradiction
 		assertEquals(1, bigLocker.getItemCount(item3.getType()));
 	}
 
