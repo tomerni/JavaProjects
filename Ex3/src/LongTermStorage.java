@@ -2,24 +2,47 @@ import oop.ex3.spaceship.Item;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * implementing the LongTermStorage class
+ */
 public class LongTermStorage {
 
+	// the left capacity in the locker
 	private int leftCapacity;
 
-	private final int capacity = 1000;
+	// the total capacity
+	private static final int CAPACITY = 1000;
 
+	// hash map the matches between item name and his appearances
 	private HashMap<String, Integer> curItems;
 
+	/**
+	 * constructor
+	 */
 	LongTermStorage() {
-		leftCapacity = capacity;
+		leftCapacity = CAPACITY;
 		curItems = new HashMap<String, Integer>();
 	}
 
+	/**
+	 * returns the available capacity of the locker
+	 * @return the available capacity
+	 */
 	public int getAvailableCapacity() {
 		return leftCapacity;
 	}
 
+	/**
+	 * addes the given item to the locker n times
+	 * @param item the given item
+	 * @param n the number of appearances
+	 * @return 0 for success, -1 for failure
+	 */
 	public int addItem(Item item, int n) {
+		if (item == null | n < 0) {
+			System.out.println("Error: Your request cannot be completed at this time");
+			return -1;
+		}
 		int overallWeight = n * item.getVolume();
 		if (overallWeight <= leftCapacity) {
 			leftCapacity -= overallWeight;
@@ -32,23 +55,34 @@ public class LongTermStorage {
 		}
 	}
 
+	/**
+	 * returns the appearances of the type
+	 * @param type the type of the item
+	 * @return the number of appearances of the type
+	 */
 	public int getItemCount(String type) {
-		if (curItems.containsKey(type)) {
-			return curItems.get(type);
-		}
-		return 0;
+		return (curItems.containsKey(type) ? curItems.get(type) : 0);
 	}
 
+	/**
+	 * @return the inventory of the locker
+	 */
 	public Map<String, Integer> getInventory() {
 		return curItems;
 	}
 
+	/**
+	 * @return the total capacity of the locker
+	 */
 	public int getCapacity() {
-		return capacity;
+		return CAPACITY;
 	}
 
+	/**
+	 * resets the locker
+	 */
 	public void resetInventory() {
-		leftCapacity = capacity;
+		leftCapacity = CAPACITY;
 		curItems = new HashMap<String, Integer>();
 	}
 }
