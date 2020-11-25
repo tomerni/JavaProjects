@@ -1,35 +1,22 @@
 import oop.ex3.spaceship.Item;
+
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * implementing the LongTermStorage class
  */
-public class LongTermStorage {
-
-	// the left capacity in the locker
-	private int leftCapacity;
+public class LongTermStorage extends AbstractLocker {
 
 	// the total capacity
-	private static final int CAPACITY = 1000;
-
-	// hash map the matches between item name and his appearances
-	private HashMap<String, Integer> curItems;
+	private static final int FINAL_CAPACITY = 1000;
 
 	/**
 	 * constructor
 	 */
 	LongTermStorage() {
-		leftCapacity = CAPACITY;
+		capacity = FINAL_CAPACITY;
+		leftCapacity = FINAL_CAPACITY;
 		curItems = new HashMap<String, Integer>();
-	}
-
-	/**
-	 * returns the available capacity of the locker
-	 * @return the available capacity
-	 */
-	public int getAvailableCapacity() {
-		return leftCapacity;
 	}
 
 	/**
@@ -56,33 +43,10 @@ public class LongTermStorage {
 	}
 
 	/**
-	 * returns the appearances of the type
-	 * @param type the type of the item
-	 * @return the number of appearances of the type
-	 */
-	public int getItemCount(String type) {
-		return (curItems.containsKey(type) ? curItems.get(type) : 0);
-	}
-
-	/**
-	 * @return the inventory of the locker
-	 */
-	public Map<String, Integer> getInventory() {
-		return curItems;
-	}
-
-	/**
-	 * @return the total capacity of the locker
-	 */
-	public int getCapacity() {
-		return CAPACITY;
-	}
-
-	/**
 	 * resets the locker
 	 */
 	public void resetInventory() {
-		leftCapacity = CAPACITY;
+		leftCapacity = capacity;
 		curItems = new HashMap<String, Integer>();
 	}
 }

@@ -1,14 +1,15 @@
 import oop.ex3.spaceship.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * implementing the Locker class
  */
-public class Locker {
+public class Locker extends AbstractLocker {
 
 	// the total capacity of the locker
-	private final int capacity;
+	//	private final int capacity;
 
 	// the constraints of the items
 	private final Item[][] constraints;
@@ -17,10 +18,10 @@ public class Locker {
 	private final LongTermStorage lts;
 
 	// the left capacity of the locker
-	private int leftCapacity;
+	//	private int leftCapacity;
 
 	// the inventory of the locker
-	private HashMap<String, Integer> curItems;
+	//	private HashMap<String, Integer> curItems;
 
 	/**
 	 * constructor
@@ -43,8 +44,7 @@ public class Locker {
 		int numberOfValidItemsToAdd = (int) (0.2 * capacity / item.getVolume());
 		int itemsToLts = newItemCount - numberOfValidItemsToAdd;
 		if (lts.getAvailableCapacity() < itemsToLts * item.getVolume()) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for" +
-							   " " + n + " items of type " + item.getType());
+			System.out.println(String.format(notEnoughRoomInLockerError, n, item.getType()));
 			return -1;
 		} else {
 			lts.addItem(item, itemsToLts);
@@ -53,7 +53,7 @@ public class Locker {
 			if (numberOfValidItemsToAdd > 0) {
 				curItems.put(item.getType(), numberOfValidItemsToAdd);
 			}
-			System.out.println("Warning: Action successful, but has caused items to be moved to storage\n");
+			System.out.println(moveToLTSError);
 			return 1;
 		}
 	}
@@ -74,26 +74,24 @@ public class Locker {
 	}
 
 	/**
-	 * addes the given item to the locker n times
+	 * adds the given item to the locker n times
 	 * @param item the given item
 	 * @param n the number of appearances
-	 * @return 0 for success, -1 for failure
+	 * @return 0 for success, -1 for failure, -2 for failure due constraints, 1 if had to move items to the
+	 * 		lts
 	 */
 	public int addItem(Item item, int n) {
 		if (item == null | n < 1) {
-			System.out.println("Error: Your request cannot be completed at this time");
+			System.out.println(defaultError);
 			return -1;
 		}
 		if (checkConstraints(item)) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: the locker " +
-							   "cannot contain items of type " + item.getType() + ", as it contains a " +
-							   "contradicting item");
+			System.out.println(String.format(contradictError, item.getType()));
 			return -2;
 		}
 		int overallWeight = n * item.getVolume();
 		if (overallWeight > leftCapacity) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: no room for" +
-							   " " + n + " items of type " + item.getType());
+			System.out.println(String.format(notEnoughRoomInLockerError, n, item.getType()));
 			return -1;
 		}
 		int newItemCount = getItemCount(item.getType()) + n;
@@ -130,52 +128,18 @@ public class Locker {
 	 */
 	public int removeItem(Item item, int n) {
 		if (item == null) {
-			System.out.println("Error: Your request cannot be completed at this time");
+			System.out.println(defaultError);
 			return -1;
 		}
 		if (n < 0) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: the locker " +
-							   "cannot remove a negative number of items of type " + item.getType());
+			System.out.println(String.format(removeNegativeError, item.getType()));
 			return -1;
 		}
 		if (!curItems.containsKey(item.getType()) | curItems.get(item.getType()) < n) {
-			System.out.println("Error: Your request cannot be completed at this time. Problem: the locker " +
-							   "does not contain " + n + " items of type " +
-							   item.getType());
+			System.out.println(String.format(removeWrongItemError, n, item.getType()));
 			return -1;
 		} else {
 			return validRemove(item, n);
 		}
-	}
-
-	/**
-	 * returns the appearances of the type
-	 * @param type the type of the item
-	 * @return the number of appearances of the type
-	 */
-	public int getItemCount(String type) {
-		return (curItems.containsKey(type) ? curItems.get(type) : 0);
-	}
-
-	/**
-	 * @return the inventory of the locker
-	 */
-	public Map<String, Integer> getInventory() {
-		return curItems;
-	}
-
-	/**
-	 * @return the total capacity of the locker
-	 */
-	public int getCapacity() {
-		return capacity;
-	}
-
-	/**
-	 * returns the available capacity of the locker
-	 * @return the available capacity
-	 */
-	public int getAvailableCapacity() {
-		return leftCapacity;
 	}
 }
