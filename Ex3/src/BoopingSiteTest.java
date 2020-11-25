@@ -21,6 +21,9 @@ public class BoopingSiteTest {
 
 		Hotel[] hotels1 = boop.getHotelsInCityByRating("jerusalem");
 		assertEquals(0, hotels1.length); // returning empty array
+
+		Hotel[] hotels2 = boop.getHotelsInCityByRating(null); // null city
+		assertEquals(0, hotels1.length); // returning empty array
 	}
 
 
@@ -28,6 +31,7 @@ public class BoopingSiteTest {
 	public void sortProximityCityTest() {
 		Hotel[] hotels = boop.getHotelsInCityByProximity("manali", 32, 77);
 
+		// checks sorting
 		assertEquals("bazira cottages", hotels[0].getPropertyName()); // closest
 		assertEquals("solang cottage", hotels[hotels.length - 1].getPropertyName()); // farthest
 
@@ -35,14 +39,18 @@ public class BoopingSiteTest {
 		assertEquals("apple inn cottage", hotels[21].getPropertyName()); // 19 POI
 		assertEquals("sunrise cottage", hotels[20].getPropertyName()); // 7 POI
 
-		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77); //invalid
-		// city
+		//invalid city
+		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77);
 		assertEquals(0, hotels1.length); // returning empty array
 
-		Hotel[] hotels2 = boop.getHotelsInCityByProximity("manali", 100, 77); //invalid
+		//invalid coordinates
+		Hotel[] hotels2 = boop.getHotelsInCityByProximity("manali", 100, 77);
 		assertEquals(0, hotels2.length); // returning empty array
-		Hotel[] hotels3 = boop.getHotelsInCityByProximity("manali", 32, -200); //invalid
+		Hotel[] hotels3 = boop.getHotelsInCityByProximity("manali", 32, -200);
 		assertEquals(0, hotels3.length); // returning empty array
+
+		Hotel[] hotels4 = boop.getHotelsInCityByRating(null); // null city
+		assertEquals(0, hotels4.length); // returning empty array
 	}
 
 

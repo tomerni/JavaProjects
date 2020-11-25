@@ -75,7 +75,7 @@ public class LockerTest {
 	@Test
 	public void testNotRegular() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
-		assertEquals(-1, smallLocker.addItem(item1, 0)); //can't enter 0 items
+		assertEquals(0, smallLocker.addItem(item1, 0)); //can enter 0 items
 		assertEquals(10, smallLocker.getCapacity()); //doesn't need to change
 
 		assertEquals(-1, smallLocker.addItem(item1, -100)); //can't enter negative items
@@ -135,6 +135,8 @@ public class LockerTest {
 
 		assertEquals(0, bigLocker.removeItem(item1, 2)); // can remove 2
 		assertEquals(0, bigLocker.getItemCount(item1.getType()));
+
+		assertEquals(-1, bigLocker.removeItem(null, 2)); // can't remove null
 	}
 
 	@Test

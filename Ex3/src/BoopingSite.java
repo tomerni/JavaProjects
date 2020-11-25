@@ -67,6 +67,9 @@ public class BoopingSite {
 	 * @return sorted array of the hotels in the city according to the rating field.
 	 */
 	public Hotel[] getHotelsInCityByRating(String city) {
+		if (city == null) {
+			return new Hotel[0];
+		}
 		ArrayList<Hotel> hotelsInTheCity = createCityHotelsArray(city, true);
 		return sortAndReturnArray(hotelsInTheCity, new SortByRating(), true);
 	}
@@ -92,7 +95,7 @@ public class BoopingSite {
 	 * @return sorted array of the hotels in the given city according to the location field.
 	 */
 	public Hotel[] getHotelsInCityByProximity(String city, double latitude, double longitude) {
-		if (checkCoordinates(latitude, longitude) == -1) {
+		if (checkCoordinates(latitude, longitude) == -1 | city == null) {
 			return new Hotel[0];
 		}
 		ArrayList<Hotel> hotelsInTheCity = createCityHotelsArray(city, true);
