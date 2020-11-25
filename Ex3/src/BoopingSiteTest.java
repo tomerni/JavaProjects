@@ -23,6 +23,7 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels1.length); // returning empty array
 	}
 
+
 	@Test
 	public void sortProximityCityTest() {
 		Hotel[] hotels = boop.getHotelsInCityByProximity("manali", 32, 77);
@@ -34,45 +35,27 @@ public class BoopingSiteTest {
 		assertEquals("apple inn cottage", hotels[21].getPropertyName()); // 19 POI
 		assertEquals("sunrise cottage", hotels[20].getPropertyName()); // 7 POI
 
-		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77);
+		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77); //invalid
+		// city
 		assertEquals(0, hotels1.length); // returning empty array
+
+		Hotel[] hotels2 = boop.getHotelsInCityByProximity("manali", 100, 77); //invalid
+		assertEquals(0, hotels2.length); // returning empty array
+		Hotel[] hotels3 = boop.getHotelsInCityByProximity("manali", 32, -200); //invalid
+		assertEquals(0, hotels3.length); // returning empty array
 	}
 
 
 	@Test
-	public void sortProximityTest() {
-		Hotel[] hotels = boop2.getHotelsByProximity(32, 77);
+	public void sortProximityTestEmptyFile() {
+		Hotel[] hotels = boop2.getHotelsByProximity(32, 77); // hotels_tst2 is empty
 
-		Hotel[] hot = HotelDataset.getHotels("hotels_tst1.txt");
-
-		System.out.print(hotels.length);
-
-		int j = 0;
-		for (Hotel i : hot) {
-			System.out.print(i.getPropertyName() + " " + Math.sqrt(Math.pow(i.getLongitude() - 77, 2) +
-																   Math.pow(i.getLatitude() - 32, 2)) +
-							 " " + i.getNumPOI() + " " + j + "\n");
-			j++;
-		}
-
-		assertEquals("bazira cottages", hotels[0].getPropertyName()); // closest
-		assertEquals("solang cottage", hotels[hotels.length - 1].getPropertyName()); // farthest
-
-		// same proximity (both 0.2907864282029195) but different POI
-		assertEquals("apple inn cottage", hotels[21].getPropertyName()); // 19 POI
-		assertEquals("sunrise cottage", hotels[20].getPropertyName()); // 7 POI
-
-		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77);
-		assertEquals(0, hotels1.length); // returning empty array
+		assertEquals(0, hotels.length);
 	}
 
 	@Test
 	public void ratingSortTestFull() {
 		Hotel[] hotels = boopFull.getHotelsInCityByRating("goa");
-		Hotel[] hotels1 = HotelDataset.getHotels("hotels_dataset.txt");
-		for (Hotel i : hotels1) {
-			System.out.print(i.getPropertyName() + " " + i.getCity() + "\n");
-		}
 
 		assertEquals("camron guest house", hotels[0].getPropertyName()); // top rating and name
 		assertEquals("wanderlust goa retreat", hotels[hotels.length - 1].getPropertyName()); // last
@@ -108,9 +91,6 @@ public class BoopingSiteTest {
 		// same proximity (both 0.2997962565585185) but different POI
 		assertEquals("city heart hotel", hotels[41].getPropertyName()); // 1 POI
 		assertEquals("hotel shree vinayak", hotels[42].getPropertyName()); // 0 POI
-
-		System.out.println(hotels[0].getNumPOI());
-		System.out.println(hotels[1].getNumPOI());
 
 		Hotel[] hotels1 = boop.getHotelsInCityByProximity("jerusalem", 32, 77);
 		assertEquals(0, hotels1.length); // returning empty array

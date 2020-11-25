@@ -20,15 +20,18 @@ public class LongTermStorage extends AbstractLocker {
 	}
 
 	/**
-	 * addes the given item to the locker n times
+	 * adds the given item to the locker n times
 	 * @param item the given item
 	 * @param n the number of appearances
 	 * @return 0 for success, -1 for failure
 	 */
 	public int addItem(Item item, int n) {
 		if (item == null | n < 0) {
-			System.out.println("Error: Your request cannot be completed at this time");
+			System.out.println(defaultError);
 			return -1;
+		}
+		if (n == 0) {
+			return 0;
 		}
 		int overallWeight = n * item.getVolume();
 		if (overallWeight <= leftCapacity) {
@@ -36,8 +39,7 @@ public class LongTermStorage extends AbstractLocker {
 			curItems.put(item.getType(), n);
 			return 0;
 		} else {
-			System.out.printf("Error: Your request cannot be completed at this time. Problem: no room for " +
-							  "%d items of type %s\n", n, item.getType());
+			System.out.printf(String.format(notEnoughRoomInLockerError, n, item.getType()));
 			return -1;
 		}
 	}
@@ -46,7 +48,7 @@ public class LongTermStorage extends AbstractLocker {
 	 * resets the locker
 	 */
 	public void resetInventory() {
-		leftCapacity = capacity;
+		leftCapacity = FINAL_CAPACITY;
 		curItems = new HashMap<String, Integer>();
 	}
 }

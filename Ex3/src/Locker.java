@@ -8,20 +8,11 @@ import java.util.Map;
  */
 public class Locker extends AbstractLocker {
 
-	// the total capacity of the locker
-	//	private final int capacity;
-
 	// the constraints of the items
 	private final Item[][] constraints;
 
 	// the lts of this locker
 	private final LongTermStorage lts;
-
-	// the left capacity of the locker
-	//	private int leftCapacity;
-
-	// the inventory of the locker
-	//	private HashMap<String, Integer> curItems;
 
 	/**
 	 * constructor
@@ -81,13 +72,16 @@ public class Locker extends AbstractLocker {
 	 * 		lts
 	 */
 	public int addItem(Item item, int n) {
-		if (item == null | n < 1) {
+		if (item == null | n < 0) {
 			System.out.println(defaultError);
 			return -1;
 		}
 		if (checkConstraints(item)) {
 			System.out.println(String.format(contradictError, item.getType()));
 			return -2;
+		}
+		if (n == 0) { // can enter 0 appearances but don't need to update the inventory
+			return 0;
 		}
 		int overallWeight = n * item.getVolume();
 		if (overallWeight > leftCapacity) {

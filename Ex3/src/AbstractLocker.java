@@ -20,7 +20,8 @@ public abstract class AbstractLocker {
 	/** contradiction error message */
 	protected static final String contradictError = "Error: Your request cannot be completed at this time." +
 													" " +
-													"Problem: the locker cannot contain items of type %s, as" +
+													"Problem: the locker cannot contain items of type %s, " +
+													"as" +
 													" " +
 													"it contains a contradicting item";
 
