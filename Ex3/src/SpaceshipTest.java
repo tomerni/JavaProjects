@@ -7,6 +7,9 @@ public class SpaceshipTest {
 	static Item[][] cons = ItemFactory.getConstraintPairs();
 	static int[] ids = new int[3];
 
+	/**
+	 * tests the create locker method
+	 */
 	@Test
 	public void createLockerTest() {
 		ids[0] = 1;
@@ -29,6 +32,9 @@ public class SpaceshipTest {
 		assertEquals(-3, space.createLocker(3, 20)); // not enough room for another
 	}
 
+	/**
+	 * tests that the get methods don't return null
+	 */
 	@Test
 	public void returningNotNullTest() {
 		ids[0] = 1;
@@ -41,6 +47,9 @@ public class SpaceshipTest {
 		assertNotNull(space.getLongTermStorage());
 	}
 
+	/**
+	 * tests the different ships have different lts
+	 */
 	@Test
 	public void notTheSameLTSTest() {
 		ids[0] = 1;
@@ -52,6 +61,9 @@ public class SpaceshipTest {
 		assertNotEquals(space.getLongTermStorage(), space1.getLongTermStorage());
 	}
 
+	/**
+	 * tests that the array from the getLockers method is valid
+	 */
 	@Test
 	public void validLengthOfLockersArrayTest() {
 		ids[0] = 1;

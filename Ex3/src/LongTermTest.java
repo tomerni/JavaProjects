@@ -8,6 +8,9 @@ public class LongTermTest {
 	static Item[] allItems = ItemFactory.createAllLegalItems();
 	static Item item4; // spores engine, 10
 
+	/**
+	 * creating the items for the test
+	 */
 	@BeforeClass
 	public static void generatingItems() {
 		for (Item i : allItems) {
@@ -17,6 +20,9 @@ public class LongTermTest {
 		}
 	}
 
+	/**
+	 * tests adding an item to the long term storage
+	 */
 	@Test
 	public void testAddItem() {
 		assertEquals(0, ltsTest.addItem(item4, 10)); //can enter
@@ -28,6 +34,9 @@ public class LongTermTest {
 		assertEquals(10, ltsTest.getItemCount(item4.getType()));
 	}
 
+	/**
+	 * tests resetting the long term storage
+	 */
 	@Test
 	public void testReset() {
 		LongTermStorage ltsTest1 = new LongTermStorage();
@@ -41,6 +50,9 @@ public class LongTermTest {
 		assertEquals(0, ltsTest1.getInventory().keySet().size()); //empty map
 	}
 
+	/**
+	 * tests the get inventory method
+	 */
 	@Test
 	public void getInventoryTest() {
 		LongTermStorage ltsTest1 = new LongTermStorage();

@@ -7,6 +7,5 @@ import org.junit.runners.Suite;
 		LongTermTest.class,
 		SpaceshipTest.class
 					})
-
 public class SpaceshipDepositoryTest {
 }

@@ -9,6 +9,9 @@ public class BoopingSiteTest {
 	private final BoopingSite boopFull = new BoopingSite("hotels_dataset.txt");
 	private final BoopingSite boop2 = new BoopingSite("hotels_tst2.txt");
 
+	/**
+	 * tests the rating sort with dataset hotels_tst1
+	 */
 	@Test
 	public void ratingSortTest() {
 		Hotel[] hotels = boop.getHotelsInCityByRating("manali");
@@ -26,7 +29,9 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels1.length); // returning empty array
 	}
 
-
+	/**
+	 * tests the proximity sort by city with dataset hotels_tst1
+	 */
 	@Test
 	public void sortProximityCityTest() {
 		Hotel[] hotels = boop.getHotelsInCityByProximity("manali", 32, 77);
@@ -53,7 +58,9 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels4.length); // returning empty array
 	}
 
-
+	/**
+	 * tests the proximity sort with dataset hotels_tst2 which is empty
+	 */
 	@Test
 	public void sortProximityTestEmptyFile() {
 		Hotel[] hotels = boop2.getHotelsByProximity(32, 77); // hotels_tst2 is empty
@@ -61,6 +68,19 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels.length);
 	}
 
+	/**
+	 * tests the rating sort with dataset hotels_tst2 which is empty
+	 */
+	@Test
+	public void sortRatingTestEmptyFile() {
+		Hotel[] hotels = boop2.getHotelsInCityByRating("manali"); // hotels_tst2 is empty
+
+		assertEquals(0, hotels.length);
+	}
+
+	/**
+	 * tests the rating sort with dataset hotels_dataset
+	 */
 	@Test
 	public void ratingSortTestFull() {
 		Hotel[] hotels = boopFull.getHotelsInCityByRating("goa");
@@ -76,6 +96,9 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels2.length); // returning empty array
 	}
 
+	/**
+	 * tests the proximity sort by city with dataset hotels_dataset
+	 */
 	@Test
 	public void sortProximityCityTestFull() {
 		Hotel[] hotels = boopFull.getHotelsInCityByProximity("delhi", 32, 77);
@@ -87,11 +110,12 @@ public class BoopingSiteTest {
 		assertEquals(0, hotels1.length); // returning empty array
 	}
 
-
+	/**
+	 * tests the proximity sort with dataset hotels_dataset
+	 */
 	@Test
 	public void sortProximityTestFull() {
 		Hotel[] hotels = boopFull.getHotelsByProximity(32, 77);
-
 
 		assertEquals("upadhyay cottages", hotels[0].getPropertyName()); // closest
 		assertEquals("tsg aura", hotels[hotels.length - 1].getPropertyName()); // farthest

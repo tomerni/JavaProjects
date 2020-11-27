@@ -15,6 +15,9 @@ public class LockerTest {
 	static Item item4; // spores engine, 10
 	static Item item5; // football, 4
 
+	/**
+	 * creating the items for the test
+	 */
 	@BeforeClass
 	public static void generatingItems() {
 		for (Item i : allItems) {
@@ -36,7 +39,9 @@ public class LockerTest {
 		}
 	}
 
-
+	/**
+	 * tests the add item method with small locker
+	 */
 	@Test
 	public void testAddItemSmall() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
@@ -63,6 +68,9 @@ public class LockerTest {
 		ltsTest.resetInventory();
 	}
 
+	/**
+	 * tests the add item method with empty locker
+	 */
 	@Test
 	public void testAddItemEmptyLocker() {
 		Locker emptyLocker = new Locker(ltsTest, 0, cons);
@@ -72,6 +80,9 @@ public class LockerTest {
 
 	}
 
+	/**
+	 * tests irregular cases
+	 */
 	@Test
 	public void testNotRegular() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
@@ -85,6 +96,9 @@ public class LockerTest {
 		assertEquals(10, smallLocker.getCapacity()); //doesn't need to change
 	}
 
+	/**
+	 * tests the add item method with big locker
+	 */
 	@Test
 	public void testAddItemBig() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
@@ -105,6 +119,9 @@ public class LockerTest {
 		ltsTest.resetInventory();
 	}
 
+	/**
+	 * tests the case in which item should be moved to the lts in the add item method
+	 */
 	@Test
 	public void movingToLTSAfterSecondAdd() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
@@ -117,6 +134,9 @@ public class LockerTest {
 		assertEquals(3, ltsTest.getItemCount(item1.getType()));
 	}
 
+	/**
+	 * tests the remove method with big locker
+	 */
 	@Test
 	public void removeTest() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
@@ -139,6 +159,9 @@ public class LockerTest {
 		assertEquals(-1, bigLocker.removeItem(null, 2)); // can't remove null
 	}
 
+	/**
+	 * tests the constraints in the add item method
+	 */
 	@Test
 	public void constraintsTest() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
@@ -149,6 +172,9 @@ public class LockerTest {
 		assertEquals(1, bigLocker.getItemCount(item3.getType()));
 	}
 
+	/**
+	 * tests the get inventory method
+	 */
 	@Test
 	public void getInventoryTest() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
