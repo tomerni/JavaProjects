@@ -149,4 +149,9 @@ public class LockerTest {
 		assertEquals(1, bigLocker.getItemCount(item3.getType()));
 	}
 
+	@Test
+	public void getInventoryTest() {
+		Locker bigLocker = new Locker(ltsTest, 1000, cons);
+		assertNotNull(bigLocker.getInventory());
+	}
 }

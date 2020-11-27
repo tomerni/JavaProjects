@@ -29,4 +29,37 @@ public class SpaceshipTest {
 		assertEquals(-3, space.createLocker(3, 20)); // not enough room for another
 	}
 
+	@Test
+	public void returningNotNullTest() {
+		ids[0] = 1;
+		ids[1] = 2;
+		ids[2] = 3;
+		Spaceship space = new Spaceship("tomer", ids, 2, cons);
+
+		assertNotNull(space.getCrewIDs());
+		assertNotNull(space.getLockers());
+		assertNotNull(space.getLongTermStorage());
+	}
+
+	@Test
+	public void notTheSameLTSTest() {
+		ids[0] = 1;
+		ids[1] = 2;
+		ids[2] = 3;
+		Spaceship space = new Spaceship("tomer", ids, 2, cons);
+		Spaceship space1 = new Spaceship("tomer1", ids, 2, cons);
+
+		assertNotEquals(space.getLongTermStorage(), space1.getLongTermStorage());
+	}
+
+	@Test
+	public void validLengthOfLockersArrayTest() {
+		ids[0] = 1;
+		ids[1] = 2;
+		ids[2] = 3;
+		Spaceship space = new Spaceship("tomer", ids, 4, cons);
+
+		assertEquals(4, space.getLockers().length);
+	}
+
 }

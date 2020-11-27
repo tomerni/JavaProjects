@@ -40,4 +40,10 @@ public class LongTermTest {
 		assertEquals(1000, ltsTest1.getAvailableCapacity()); //full size
 		assertEquals(0, ltsTest1.getInventory().keySet().size()); //empty map
 	}
+
+	@Test
+	public void getInventoryTest() {
+		LongTermStorage ltsTest1 = new LongTermStorage();
+		assertNotNull(ltsTest1.getInventory());
+	}
 }

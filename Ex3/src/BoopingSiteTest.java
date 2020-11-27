@@ -12,12 +12,12 @@ public class BoopingSiteTest {
 	@Test
 	public void ratingSortTest() {
 		Hotel[] hotels = boop.getHotelsInCityByRating("manali");
-		assertEquals("apple inn cottage", hotels[0].getPropertyName()); // top rating and name
+		assertEquals("baragarh villa", hotels[0].getPropertyName()); // top rating and name
 		assertEquals("woodyvu mansari cottage", hotels[hotels.length - 1].getPropertyName()); // last
 
-		// same rating (both 5) but different names
-		assertEquals("apple inn cottage", hotels[0].getPropertyName());
-		assertEquals("country cottage manali", hotels[1].getPropertyName());
+		// same rating but different names
+		assertEquals("baragarh villa", hotels[0].getPropertyName());
+		assertEquals("bharhka countryside cottage resort", hotels[1].getPropertyName());
 
 		Hotel[] hotels1 = boop.getHotelsInCityByRating("jerusalem");
 		assertEquals(0, hotels1.length); // returning empty array
@@ -65,12 +65,12 @@ public class BoopingSiteTest {
 	public void ratingSortTestFull() {
 		Hotel[] hotels = boopFull.getHotelsInCityByRating("goa");
 
-		assertEquals("camron guest house", hotels[0].getPropertyName()); // top rating and name
-		assertEquals("wanderlust goa retreat", hotels[hotels.length - 1].getPropertyName()); // last
+		assertEquals("cidade de goa", hotels[0].getPropertyName()); // top rating and name
+		assertEquals("xaviers cafe &amp; cottages", hotels[hotels.length - 1].getPropertyName()); // last
 
 		// same rating (both 5) but different names
-		assertEquals("camron guest house", hotels[0].getPropertyName());
-		assertEquals("casa anjuna-boutique resort", hotels[1].getPropertyName());
+		assertEquals("cidade de goa", hotels[0].getPropertyName());
+		assertEquals("the zuri white sands goa resort and casino", hotels[1].getPropertyName());
 
 		Hotel[] hotels2 = boop.getHotelsInCityByRating("jerusalem");
 		assertEquals(0, hotels2.length); // returning empty array
