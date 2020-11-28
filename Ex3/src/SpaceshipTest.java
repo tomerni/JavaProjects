@@ -17,19 +17,21 @@ public class SpaceshipTest {
 		ids[2] = 3;
 		Spaceship space = new Spaceship("tomer", ids, 2, cons);
 
-		assertEquals(0, space.createLocker(1, 10)); // can create
+		assertEquals("valid create failure", 0, space.createLocker(1, 10)); // can create
 		assertNotNull(space.getLockers()[0]); // locker and not null
-		assertEquals(10, space.getLockers()[0].getCapacity()); // capacity of 10
+		assertEquals("locker capacity failure", 10, space.getLockers()[0].getCapacity()); // capacity of 10
 
-		assertEquals(-1, space.createLocker(10, 10)); // not a valid id
+		assertEquals("not a valid id failure", -1, space.createLocker(10, 10)); // not a valid id
 
-		assertEquals(-2, space.createLocker(2, -10)); // negative capacity
+		assertEquals("invalid capacity", -2, space.createLocker(2, -10)); // negative capacity
 
-		assertEquals(0, space.createLocker(2, 40)); // can enter
+		assertEquals("valid create failure", 0, space.createLocker(2, 40)); // can enter
 		assertNotNull(space.getLockers()[1]); // locker and not null
-		assertEquals(40, space.getLockers()[1].getCapacity()); // length of lockers is 40
+		assertEquals("locker capacity failure", 40, space.getLockers()[1].getCapacity()); // length of
+		// lockers is 40
 
-		assertEquals(-3, space.createLocker(3, 20)); // not enough room for another
+		assertEquals("not enough room to create more lockers", -3, space.createLocker(3, 20)); // not enough
+		// room for another
 	}
 
 	/**

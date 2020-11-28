@@ -25,13 +25,13 @@ public class LongTermTest {
 	 */
 	@Test
 	public void testAddItem() {
-		assertEquals(0, ltsTest.addItem(item4, 10)); //can enter
-		assertEquals(900, ltsTest.getAvailableCapacity());
-		assertEquals(10, ltsTest.getItemCount(item4.getType()));
+		assertEquals("valid enter failure", 0, ltsTest.addItem(item4, 10)); //can enter
+		assertEquals("invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
+		assertEquals("invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
 
-		assertEquals(-1, ltsTest.addItem(item4, 100)); // can't enter
-		assertEquals(900, ltsTest.getAvailableCapacity());
-		assertEquals(10, ltsTest.getItemCount(item4.getType()));
+		assertEquals("invalid enter failure", -1, ltsTest.addItem(item4, 100)); // can't enter
+		assertEquals("invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
+		assertEquals("invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
 	}
 
 	/**
@@ -46,8 +46,10 @@ public class LongTermTest {
 
 		ltsTest1.resetInventory();
 
-		assertEquals(1000, ltsTest1.getAvailableCapacity()); //full size
-		assertEquals(0, ltsTest1.getInventory().keySet().size()); //empty map
+		assertEquals("invalid capacity after reset", 1000, ltsTest1.getAvailableCapacity()); //full
+		// size
+		assertEquals("invalid map after reset", 0, ltsTest1.getInventory().keySet().size());
+		//empty map
 	}
 
 	/**

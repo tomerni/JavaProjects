@@ -45,25 +45,26 @@ public class LockerTest {
 	@Test
 	public void testAddItemSmall() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
-		assertEquals(0, smallLocker.addItem(item1, 1)); // can enter
-		assertEquals(1, smallLocker.getItemCount(item1.getType())); // checks enter
-		assertEquals(8, smallLocker.getAvailableCapacity());
+		assertEquals("valid enter failure", 0, smallLocker.addItem(item1, 1)); // can enter
+		assertEquals("didn't update the item count", 1, smallLocker.getItemCount(item1.getType())); // checks
+		// enter
+		assertEquals("didn't update the available capacity", 8, smallLocker.getAvailableCapacity());
 
-		assertEquals(1, smallLocker.addItem(item1, 2)); // need to move 2 to lts
-		assertEquals(1, smallLocker.getItemCount(item1.getType())); // checks enter
-		assertEquals(2, ltsTest.getItemCount(item1.getType()));
-		assertEquals(8, smallLocker.getAvailableCapacity());
-		assertEquals(996, ltsTest.getAvailableCapacity());
+		assertEquals("move to lts failure", 1, smallLocker.addItem(item1, 2)); // need to move 2 to lts
+		assertEquals("add count failure", 1, smallLocker.getItemCount(item1.getType())); // checks enter
+		assertEquals("add count failure", 2, ltsTest.getItemCount(item1.getType()));
+		assertEquals("available capacity failure", 8, smallLocker.getAvailableCapacity());
+		assertEquals("available capacity failure", 996, ltsTest.getAvailableCapacity());
 
-		assertEquals(-1, smallLocker.addItem(item1, 10)); // can't enter at all
-		assertEquals(1, smallLocker.getItemCount(item1.getType()));
-		assertEquals(2, ltsTest.getItemCount(item1.getType()));
+		assertEquals("invalid add failure", -1, smallLocker.addItem(item1, 10)); // can't enter at all
+		assertEquals("add count failure", 1, smallLocker.getItemCount(item1.getType()));
+		assertEquals("add count failure", 2, ltsTest.getItemCount(item1.getType()));
 
-		assertEquals(1, smallLocker.addItem(item2, 2)); // move to lts
-		assertEquals(0, smallLocker.getItemCount(item2.getType()));
-		assertEquals(2, ltsTest.getItemCount(item2.getType()));
-		assertEquals(8, smallLocker.getAvailableCapacity());
-		assertEquals(990, ltsTest.getAvailableCapacity());
+		assertEquals("move to lts failure", 1, smallLocker.addItem(item2, 2)); // move to lts
+		assertEquals("add count failure", 0, smallLocker.getItemCount(item2.getType()));
+		assertEquals("add count failure", 2, ltsTest.getItemCount(item2.getType()));
+		assertEquals("available capacity failure", 8, smallLocker.getAvailableCapacity());
+		assertEquals("available capacity failure", 990, ltsTest.getAvailableCapacity());
 
 		ltsTest.resetInventory();
 	}
@@ -86,14 +87,20 @@ public class LockerTest {
 	@Test
 	public void testNotRegular() {
 		Locker smallLocker = new Locker(ltsTest, 10, cons);
-		assertEquals(0, smallLocker.addItem(item1, 0)); //can enter 0 items
-		assertEquals(10, smallLocker.getCapacity()); //doesn't need to change
+		assertEquals("entering 0 items failure", 0, smallLocker.addItem(item1, 0)); //can enter 0 items
+		assertEquals("didn't need to change the capacity", 10,
+					 smallLocker.getAvailableCapacity()); //doesn't need to
+		// change
 
-		assertEquals(-1, smallLocker.addItem(item1, -100)); //can't enter negative items
-		assertEquals(10, smallLocker.getCapacity()); //doesn't need to change
+		assertEquals("adding negative items failure", -1, smallLocker.addItem(item1, -100)); //can't enter
+		// negative
+		// items
+		assertEquals("available capacity failure", 10, smallLocker.getAvailableCapacity()); //doesn't need
+		// to change
 
-		assertEquals(-1, smallLocker.addItem(null, 10)); //can't enter null item
-		assertEquals(10, smallLocker.getCapacity()); //doesn't need to change
+		assertEquals("entering null failure", -1, smallLocker.addItem(null, 10)); //can't enter null item
+		assertEquals("available capacity failure", 10,
+					 smallLocker.getAvailableCapacity()); //doesn't need to change
 	}
 
 	/**
@@ -102,19 +109,19 @@ public class LockerTest {
 	@Test
 	public void testAddItemBig() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
-		assertEquals(0, bigLocker.addItem(item3, 30)); // can enter
-		assertEquals(30, bigLocker.getItemCount(item3.getType())); // checks enter
-		assertEquals(850, bigLocker.getAvailableCapacity());
+		assertEquals("valid add failure", 0, bigLocker.addItem(item3, 30)); // can enter
+		assertEquals("add count failure", 30, bigLocker.getItemCount(item3.getType())); // checks enter
+		assertEquals("available capacity failure", 850, bigLocker.getAvailableCapacity());
 
-		assertEquals(1, bigLocker.addItem(item4, 60)); // need to move 20 to lts
-		assertEquals(20, bigLocker.getItemCount(item4.getType())); // checks enter
-		assertEquals(40, ltsTest.getItemCount(item4.getType()));
-		assertEquals(650, bigLocker.getAvailableCapacity());
-		assertEquals(600, ltsTest.getAvailableCapacity());
+		assertEquals("add to lts failure", 1, bigLocker.addItem(item4, 60)); // need to move 20 to lts
+		assertEquals("add count failure", 20, bigLocker.getItemCount(item4.getType())); // checks enter
+		assertEquals("add count failure", 40, ltsTest.getItemCount(item4.getType()));
+		assertEquals("available capacity failure", 650, bigLocker.getAvailableCapacity());
+		assertEquals("available capacity failure", 600, ltsTest.getAvailableCapacity());
 
-		assertEquals(-1, bigLocker.addItem(item4, 65)); // can't enter to lts
-		assertEquals(650, bigLocker.getAvailableCapacity());
-		assertEquals(600, ltsTest.getAvailableCapacity());
+		assertEquals("can't enter to lts failure", -1, bigLocker.addItem(item4, 65)); // can't enter to lts
+		assertEquals("available capacity failure", 650, bigLocker.getAvailableCapacity());
+		assertEquals("available capacity failure", 600, ltsTest.getAvailableCapacity());
 
 		ltsTest.resetInventory();
 	}
@@ -144,19 +151,21 @@ public class LockerTest {
 		assertEquals(0, bigLocker.removeItem(item1, 8)); // can remove
 		assertEquals(2, bigLocker.getItemCount(item1.getType()));
 
-		assertEquals(-1, bigLocker.removeItem(item1, -1)); // can't remove negative
-		assertEquals(2, bigLocker.getItemCount(item1.getType()));
+		assertEquals("remove negative failure", -1, bigLocker.removeItem(item1, -1)); // can't remove
+		// negative
+		assertEquals("remove count failure", 2, bigLocker.getItemCount(item1.getType()));
 
-		assertEquals(0, bigLocker.removeItem(item1, 0)); // can remove 0
-		assertEquals(2, bigLocker.getItemCount(item1.getType()));
+		assertEquals("remove 0 failure", 0, bigLocker.removeItem(item1, 0)); // can remove 0
+		assertEquals("remove count failure", 2, bigLocker.getItemCount(item1.getType()));
 
-		assertEquals(-1, bigLocker.removeItem(item1, 5)); // can't remove 5, only 2
-		assertEquals(2, bigLocker.getItemCount(item1.getType()));
+		assertEquals("remove too much failure", -1, bigLocker.removeItem(item1, 5)); // can't remove 5,
+		// only 2
+		assertEquals("remove count failure", 2, bigLocker.getItemCount(item1.getType()));
 
-		assertEquals(0, bigLocker.removeItem(item1, 2)); // can remove 2
-		assertEquals(0, bigLocker.getItemCount(item1.getType()));
+		assertEquals("valid remove failure", 0, bigLocker.removeItem(item1, 2)); // can remove 2
+		assertEquals("remove count failure", 0, bigLocker.getItemCount(item1.getType()));
 
-		assertEquals(-1, bigLocker.removeItem(null, 2)); // can't remove null
+		assertEquals("remove null failure", -1, bigLocker.removeItem(null, 2)); // can't remove null
 	}
 
 	/**
@@ -166,9 +175,11 @@ public class LockerTest {
 	public void constraintsTest() {
 		Locker bigLocker = new Locker(ltsTest, 1000, cons);
 		bigLocker.addItem(item1, 1); //baseball bat
-		assertEquals(-2, bigLocker.addItem(item5, 1)); //adding football, contradiction
+		assertEquals("contradiction failure", -2, bigLocker.addItem(item5, 1)); //adding football,
+		// contradiction
 		assertEquals(0, bigLocker.getItemCount(item5.getType()));
-		assertEquals(0, bigLocker.addItem(item3, 1)); //adding helmet, not a contradiction
+		assertEquals("not a contradiction failure", 0, bigLocker.addItem(item3, 1)); //adding helmet, not a
+		// contradiction
 		assertEquals(1, bigLocker.getItemCount(item3.getType()));
 	}
 
