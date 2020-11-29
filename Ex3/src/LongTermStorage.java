@@ -39,7 +39,7 @@ public class LongTermStorage extends AbstractLocker {
 			curItems.put(item.getType(), n);
 			return 0;
 		} else {
-			System.out.printf(String.format(notEnoughRoomInLockerError, n, item.getType()));
+			System.out.println(String.format(notEnoughRoomInLockerError, n, item.getType()));
 			return -1;
 		}
 	}
