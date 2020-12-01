@@ -2,6 +2,9 @@ import oop.ex3.spaceship.Item;
 
 import java.util.HashMap;
 
+/**
+ * implements the spaceship class
+ */
 public class Spaceship {
 
 	// the name of the ship

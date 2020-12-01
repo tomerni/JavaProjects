@@ -3,8 +3,11 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * implements the long term storage tests
+ */
 public class LongTermTest {
-	static LongTermStorage ltsTest = new LongTermStorage();
+	static LongTermStorage ltsTest, ltsTest1;
 	static Item[] allItems = ItemFactory.createAllLegalItems();
 	static Item item4; // spores engine, 10
 
@@ -18,6 +21,8 @@ public class LongTermTest {
 				item4 = i;
 			}
 		}
+		ltsTest = new LongTermStorage();
+		ltsTest1 = new LongTermStorage();
 	}
 
 	/**
@@ -25,13 +30,13 @@ public class LongTermTest {
 	 */
 	@Test
 	public void testAddItem() {
-		assertEquals("valid enter failure", 0, ltsTest.addItem(item4, 10)); //can enter
-		assertEquals("invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
-		assertEquals("invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
+		assertEquals("testAddItem(LongTermTest): valid enter failure", 0, ltsTest.addItem(item4, 10)); //can enter
+		assertEquals("testAddItem(LongTermTest): invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
+		assertEquals("testAddItem(LongTermTest): invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
 
-		assertEquals("invalid enter failure", -1, ltsTest.addItem(item4, 100)); // can't enter
-		assertEquals("invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
-		assertEquals("invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
+		assertEquals("testAddItem(LongTermTest): invalid enter failure", -1, ltsTest.addItem(item4, 100)); // can't enter
+		assertEquals("testAddItem(LongTermTest): invalid available capacity after adding", 900, ltsTest.getAvailableCapacity());
+		assertEquals("testAddItem(LongTermTest): invalid item count after adding", 10, ltsTest.getItemCount(item4.getType()));
 	}
 
 	/**
@@ -46,9 +51,9 @@ public class LongTermTest {
 
 		ltsTest1.resetInventory();
 
-		assertEquals("invalid capacity after reset", 1000, ltsTest1.getAvailableCapacity()); //full
+		assertEquals("testReset(LongTermTest): invalid capacity after reset", 1000, ltsTest1.getAvailableCapacity()); //full
 		// size
-		assertEquals("invalid map after reset", 0, ltsTest1.getInventory().keySet().size());
+		assertEquals("testReset(LongTermTest): invalid map after reset", 0, ltsTest1.getInventory().keySet().size());
 		//empty map
 	}
 

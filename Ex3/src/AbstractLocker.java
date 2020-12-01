@@ -3,6 +3,9 @@ import oop.ex3.spaceship.Item;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * implements an abstract locker
+ */
 public abstract class AbstractLocker {
 
 	/** the left capacity of the locker */
@@ -53,6 +56,7 @@ public abstract class AbstractLocker {
 	 * adds the given item to the locker n times. Every child has to implement it.
 	 * @param item the given item
 	 * @param n the number of appearances
+	 * @return 0 for success, different number for failure
 	 */
 	public abstract int addItem(Item item, int n);
 

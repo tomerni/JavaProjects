@@ -90,6 +90,7 @@ public class BoopingSite {
 
 	/**
 	 * Sorts the hotels in the city according to the rating field
+	 * @param city the given city
 	 * @param latitude coordinate
 	 * @param longitude coordinate
 	 * @return sorted array of the hotels in the given city according to the location field.
