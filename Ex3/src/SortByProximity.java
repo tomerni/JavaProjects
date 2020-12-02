@@ -43,7 +43,7 @@ public class SortByProximity implements Comparator<Hotel> {
 			if (a.getNumPOI() > b.getNumPOI()) {
 				return -1;
 			}
-			return 0;
+			return a.getUniqueId().compareTo(b.getUniqueId()); // same proximity and same POI - sort by id
 		}
 		return distCompare;
 	}

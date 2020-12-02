@@ -18,7 +18,11 @@ public class SortByRating implements Comparator<Hotel> {
 	public int compare(Hotel a, Hotel b) {
 		int ratingCompare = Float.compare(a.getStarRating(), b.getStarRating());
 		if (ratingCompare == 0) { // if the rating is the same, compare by their names
-			return b.getPropertyName().compareTo(a.getPropertyName());
+			int t = b.getPropertyName().compareTo(a.getPropertyName());
+			if (t != 0) {
+				return t;
+			}
+			return a.getUniqueId().compareTo(b.getUniqueId()); // same rating and same name - sort by id
 		}
 		return ratingCompare;
 	}
