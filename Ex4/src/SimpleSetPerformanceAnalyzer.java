@@ -4,26 +4,35 @@ import java.util.TreeSet;
 
 import org.junit.*;
 
+/**
+ * implements the SimpleSetPerformanceAnalyzer class
+ */
 public class SimpleSetPerformanceAnalyzer {
 
+    /** the number of warmup iterations */
     static final int WARMUP_ITERATIONS = 70000;
 
+    /** the number of data structures to analyze */
     static final int NUM_OF_DATA_STRUCTURES = 5;
 
+    /** data1 string array */
     static final String[] data1 = Ex4Utils.file2array("C:\\Users\\tomer\\Google Drive (tomer.nissim@mail" +
             ".huji.ac.il)\\Second year\\Semester A\\oop\\Ex4\\src\\data1.txt");
 
+    /** data2 string array */
     static final String[] data2 = Ex4Utils.file2array("C:\\Users\\tomer\\Google Drive (tomer.nissim@mail" +
             ".huji.ac.il)\\Second year\\Semester A\\oop\\Ex4\\src\\data2.txt");
 
+    // array with the data structures for data1
     private final SimpleSet[] dataSets1;
 
+    // array with the data structures for data2
     private final SimpleSet[] dataSets2;
 
     // CONSTRUCTOR
 
     /**
-     *
+     * constructs the arrays for the analyze
      */
     public SimpleSetPerformanceAnalyzer() {
         dataSets1 = new SimpleSet[NUM_OF_DATA_STRUCTURES];
@@ -34,103 +43,62 @@ public class SimpleSetPerformanceAnalyzer {
 
     // PRIVATE METHODS
 
+    /*
+     * inits the given array with the data structures
+     */
     private void initDataSet(SimpleSet[] s) {
-        s[0] = new ClosedHashSet();
-        s[1] = new OpenHashSet();
-        s[2] = new CollectionFacadeSet(new LinkedList<String>());
-        s[3] = new CollectionFacadeSet(new TreeSet<String>());
-        s[4] = new CollectionFacadeSet(new HashSet<String>());
+        s[1] = new ClosedHashSet();
+        s[0] = new OpenHashSet();
+        s[4] = new CollectionFacadeSet(new LinkedList<String>());
+        s[2] = new CollectionFacadeSet(new TreeSet<String>());
+        s[3] = new CollectionFacadeSet(new HashSet<String>());
     }
 
-    @Test
-    public void addData1() {
+    /*
+     * Adds the data from the string array to the data structures in the set
+     */
+    private void addData(SimpleSet[] set, String[] data) {
         for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
             long timeBefore = System.nanoTime();
-            assert data1 != null;
-            for (String s : data1) {
-                dataSets1[i].add(s);
+            assert data != null;
+            for (String s : data) {
+                set[i].add(s);
             }
             long difference = System.nanoTime() - timeBefore;
-            System.out.println("addData1 " + (difference / 1000000));
+            System.out.println(difference / 1000000);
         }
     }
 
-    @Test
-    public void addData2() {
-        for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
-            long timeBefore = System.nanoTime();
-            assert data2 != null;
-            for (String s : data2) {
-                dataSets2[i].add(s);
-            }
-            long difference = System.nanoTime() - timeBefore;
-            System.out.println("addData2 " + (difference / 1000000));
-        }
-    }
-
-    private void containsHI() {
+    /*
+     * performs a contain check for the given word in the given set
+     */
+    private void containsCheck(String word, SimpleSet[] set) {
         long timeBefore = 0;
-        for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
+        for (int i = 0; i < NUM_OF_DATA_STRUCTURES - 1; i++) {
             for (int j = 0; j < 2 * WARMUP_ITERATIONS; j++) {
-                dataSets1[i].contains("hi");
+                set[i].contains(word);
                 if (j == WARMUP_ITERATIONS) {
                     timeBefore = System.nanoTime();
                 }
             }
             long difference = System.nanoTime() - timeBefore;
-            System.out.println("containsHI " + difference / WARMUP_ITERATIONS);
+            System.out.println(word + " " + difference / WARMUP_ITERATIONS);
         }
-    }
-
-    private void contains13170890158() {
-        long timeBefore = 0;
-        for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
-            for (int j = 0; j < 2 * WARMUP_ITERATIONS; j++) {
-                dataSets1[i].contains("-13170890158");
-                if (j == WARMUP_ITERATIONS) {
-                    timeBefore = System.nanoTime();
-                }
-            }
-            long difference = System.nanoTime() - timeBefore;
-            System.out.println("contains-13170890158 " + difference / WARMUP_ITERATIONS);
+        timeBefore = System.nanoTime();
+        for (int j = 0; j < (WARMUP_ITERATIONS / 10); j++) {
+            set[4].contains(word);
         }
-    }
-
-    private void contains23() {
-        long timeBefore = 0;
-        for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
-            for (int j = 0; j < 2 * WARMUP_ITERATIONS; j++) {
-                dataSets1[i].contains("23");
-                if (j == WARMUP_ITERATIONS) {
-                    timeBefore = System.nanoTime();
-                }
-            }
-            long difference = System.nanoTime() - timeBefore;
-            System.out.println("contains23 " + difference / WARMUP_ITERATIONS);
-        }
-    }
-
-    private void containsHi2() {
-        long timeBefore = 0;
-        for (int i = 0; i < NUM_OF_DATA_STRUCTURES; i++) {
-            for (int j = 0; j < 2 * WARMUP_ITERATIONS; j++) {
-                dataSets1[i].contains("hi");
-                if (j == WARMUP_ITERATIONS) {
-                    timeBefore = System.nanoTime();
-                }
-            }
-            long difference = System.nanoTime() - timeBefore;
-            System.out.println("containsHi2 " + difference / WARMUP_ITERATIONS);
-        }
+        long difference = System.nanoTime() - timeBefore;
+        System.out.println(word + " " +  difference / (WARMUP_ITERATIONS / 10));
     }
 
     @Test
     public void dataTest() {
-        addData1();
-        containsHI();
-        contains13170890158();
-        addData2();
-        contains23();
-        containsHi2();
+        addData(dataSets1, data1);
+        containsCheck("hi", dataSets1);
+        containsCheck("-13170890158", dataSets1);
+        addData(dataSets2, data2);
+        containsCheck("23", dataSets2);
+        containsCheck("hi", dataSets2);
     }
 }

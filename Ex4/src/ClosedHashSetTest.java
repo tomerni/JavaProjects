@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 public class ClosedHashSetTest {
 
     private ClosedHashSet hash = new ClosedHashSet();
+    private ClosedHashSet hash1 = new ClosedHashSet(1f, 0.25f);
 
     @Test
     public void addTest() {
@@ -44,6 +45,35 @@ public class ClosedHashSetTest {
 
         }
         assertEquals(0, hash.size());
+    }
+
+    @Test
+    public void reSizeTest1() {
+        for (int i = 0; i < 129; i++) {
+            hash1.add("a" + i);
+            if (i < 16) {
+                assertEquals(16, hash1.curCapacity);
+            }
+            if (16 <= i & i < 32) {
+                assertEquals(32, hash1.curCapacity);
+            }
+            if (32 <= i & i < 64) {
+                assertEquals(64, hash1.curCapacity);
+            }
+            if (64 <= i & i < 128) {
+                assertEquals(128, hash1.curCapacity);
+            }
+            assertEquals(i+1, hash1.curNumOfItems);
+        }
+
+        for (int i = 0; i < 129; i++) {
+            hash1.delete("a" + i);
+            if (i == 60){
+                assertEquals(256, hash1.capacity());
+            }
+
+        }
+        assertEquals(0, hash1.size());
     }
 
     @Test

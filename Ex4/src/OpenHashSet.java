@@ -45,6 +45,9 @@ public class OpenHashSet extends SimpleHashSet {
 
     // PRIVATE METHODS
 
+    /*
+     * inits the hash table with linked list wrappers
+     */
     private void initTable(LinkedListWrapper[] hashTable) {
         for (int i = 0; i < curCapacity; i++) {
             hashTable[i] = new LinkedListWrapper();
@@ -92,12 +95,8 @@ public class OpenHashSet extends SimpleHashSet {
      * @return True iff searchVal is found in the set
      */
     public boolean contains(String searchVal) {
-        for (LinkedListWrapper w : hashTable) {
-            if (w.contains(searchVal)) {
-                return true;
-            }
-        }
-        return false;
+        int index = clamp(searchVal.hashCode());
+        return hashTable[index].contains(searchVal);
     }
 
     /**
