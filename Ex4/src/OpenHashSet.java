@@ -1,5 +1,6 @@
-import java.util.ArrayList;
-
+/**
+ * implements the open hash set
+ */
 public class OpenHashSet extends SimpleHashSet {
 
     /** the hash table */
@@ -46,7 +47,7 @@ public class OpenHashSet extends SimpleHashSet {
     // PRIVATE METHODS
 
     /*
-     * inits the hash table with linked list wrappers
+     * init the hash table with linked list wrappers
      */
     private void initTable(LinkedListWrapper[] hashTable) {
         for (int i = 0; i < curCapacity; i++) {
