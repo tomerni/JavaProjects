@@ -19,6 +19,7 @@ public class LinkedListWrapper {
 	/**
 	 * delegates to the linked list
 	 * @param searchVal the value to search
+	 * @return true iff the item is in the linked list
 	 */
 	public boolean contains(String searchVal) {
 		return str.contains(searchVal);

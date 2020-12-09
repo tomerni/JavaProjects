@@ -16,14 +16,10 @@ public class SimpleSetPerformanceAnalyzer {
 	static final int NUM_OF_DATA_STRUCTURES = 5;
 
 	/** data1 string array */
-	static final String[] data1 = Ex4Utils.file2array("C:\\Users\\tomer\\Google Drive (tomer.nissim@mail" +
-													  ".huji.ac.il)\\Second year\\Semester " +
-													  "A\\oop\\Ex4\\src\\data1.txt");
+	static final String[] data1 = Ex4Utils.file2array("src\\data1.txt");
 
 	/** data2 string array */
-	static final String[] data2 = Ex4Utils.file2array("C:\\Users\\tomer\\Google Drive (tomer.nissim@mail" +
-													  ".huji.ac.il)\\Second year\\Semester " +
-													  "A\\oop\\Ex4\\src\\data2.txt");
+	static final String[] data2 = Ex4Utils.file2array("src\\data2.txt");
 
 	// array with the data structures for data1
 	private final SimpleSet[] dataSets1;
@@ -94,8 +90,10 @@ public class SimpleSetPerformanceAnalyzer {
 		System.out.println(word + " " + difference / (WARMUP_ITERATIONS / 10));
 	}
 
-	@Test
-	public void dataTest() {
+	/*
+	 * executes the tests
+	 */
+	private void dataTest() {
 		addData(dataSets1, data1);
 		containsCheck("hi", dataSets1);
 		containsCheck("-13170890158", dataSets1);

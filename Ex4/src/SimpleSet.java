@@ -24,5 +24,5 @@ public interface SimpleSet {
 	/**
 	 * @return The number of elements currently in the set
 	 */
-	public int size();
+	int size();
 }
