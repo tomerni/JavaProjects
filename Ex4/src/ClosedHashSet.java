@@ -4,8 +4,8 @@
 public class ClosedHashSet extends SimpleHashSet {
 
 
-    /** the hash table */
-    public String[] hashTable;
+    // the hash table
+    private String[] hashTable;
 
     // this string represents a deleted string
     private final String deletedString = "deleted";

@@ -9,17 +9,17 @@ import org.junit.*;
  */
 public class SimpleSetPerformanceAnalyzer {
 
-	/** the number of warmup iterations */
-	static final int WARMUP_ITERATIONS = 70000;
+	// the number of warmup iterations
+	private static final int WARMUP_ITERATIONS = 70000;
 
-	/** the number of data structures to analyze */
-	static final int NUM_OF_DATA_STRUCTURES = 5;
+	// the number of data structures to analyze
+	private static final int NUM_OF_DATA_STRUCTURES = 5;
 
-	/** data1 string array */
-	static final String[] data1 = Ex4Utils.file2array("src\\data1.txt");
+	// data1 string array
+	private static final String[] data1 = Ex4Utils.file2array("src\\data1.txt");
 
-	/** data2 string array */
-	static final String[] data2 = Ex4Utils.file2array("src\\data2.txt");
+	// data2 string array
+	private static final String[] data2 = Ex4Utils.file2array("src\\data2.txt");
 
 	// array with the data structures for data1
 	private final SimpleSet[] dataSets1;
@@ -93,7 +93,8 @@ public class SimpleSetPerformanceAnalyzer {
 	/*
 	 * executes the tests
 	 */
-	private void dataTest() {
+	@Test
+	public void dataTest() {
 		addData(dataSets1, data1);
 		containsCheck("hi", dataSets1);
 		containsCheck("-13170890158", dataSets1);

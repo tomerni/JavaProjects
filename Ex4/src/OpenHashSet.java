@@ -3,8 +3,8 @@
  */
 public class OpenHashSet extends SimpleHashSet {
 
-	/** the hash table */
-	public LinkedListWrapper[] hashTable;
+	// the hash table
+	private LinkedListWrapper[] hashTable;
 
 	// CONSTRUCTORS
 
