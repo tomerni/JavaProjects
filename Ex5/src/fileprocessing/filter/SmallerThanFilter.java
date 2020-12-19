@@ -3,7 +3,7 @@ package fileprocessing.filter;
 import java.io.File;
 import java.util.ArrayList;
 
-public class GreaterThanFilter implements Filter{
+public class SmallerThanFilter implements Filter {
 
 	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
 		ArrayList<File> results = new ArrayList<File>();
@@ -13,12 +13,12 @@ public class GreaterThanFilter implements Filter{
 		}
 		for (File f : files) {
 			if (flag) {
-				if ((f.length() / 1024f) > size) {
+				if ((f.length() / 1024f) < size) {
 					results.add(f);
 				}
 			}
 			else {
-				if ((f.length() / 1024f) <= size) {
+				if ((f.length() / 1024f) >= size) {
 					results.add(f);
 				}
 			}

@@ -1,0 +1,50 @@
+package fileprocessing.filter;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+public class PermissionFilter implements Filter{
+
+	private final String filterName;
+
+	public PermissionFilter(String filterName) {
+		this.filterName = filterName;
+	}
+
+	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
+		Function<File, Boolean> filter = filterFinder();
+		ArrayList<File> results = new ArrayList<File>();
+		if (!(splitString[1].equals("NO") || splitString[1].equals("YES"))) {
+			return null;
+		}
+		if (splitString[1].equals("NO")) {
+			flag = !flag;
+		}
+		for (File f : files) {
+			if (flag) {
+				if (filter.apply(f)) {
+					results.add(f);
+				}
+			}
+			else {
+				if (filter.apply(f)) {
+					results.add(f);
+				}
+			}
+		}
+		return results;
+	}
+
+	private Function<File, Boolean> filterFinder() {
+		switch (filterName) {
+		case ("writeable"):
+			return File::canWrite;
+		case ("executable"):
+			return File::canExecute;
+		case ("hidden"):
+			return File::isHidden;
+		}
+		return null;
+	}
+}

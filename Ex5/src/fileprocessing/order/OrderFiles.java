@@ -22,28 +22,25 @@ public class OrderFiles {
 	// PRIVATE METHODS
 
 	private void quickSort(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
-		if (low < high)
-		{
+		if (low < high) {
             /* pi is partitioning index, arr[pi] is
               now at right place */
 			int pi = partition(list, low, high, comparator);
 
 			// Recursively sort elements before
 			// partition and after partition
-			quickSort(list, low, pi-1, comparator);
-			quickSort(list, pi+1, high, comparator);
+			quickSort(list, low, pi - 1, comparator);
+			quickSort(list, pi + 1, high, comparator);
 		}
 	}
 
 	private int partition(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
 		File pivot = list.get(high);
-		int i = (low-1); // index of smaller element
-		for (int j=low; j<high; j++)
-		{
+		int i = (low - 1); // index of smaller element
+		for (int j = low; j < high; j++) {
 			// If current element is smaller than the pivot
 			int compareResult = comparator.compare(list.get(j), pivot);
-			if (compareResult < 0)
-			{
+			if (compareResult < 0) {
 				i++;
 
 				// swap arr[i] and arr[j]
@@ -54,11 +51,11 @@ public class OrderFiles {
 		}
 
 		// swap arr[i+1] and arr[high] (or pivot)
-		File temp = list.get(i+1);
-		list.set(i+1, list.get(high));
+		File temp = list.get(i + 1);
+		list.set(i + 1, list.get(high));
 		list.set(high, temp);
 
-		return i+1;
+		return i + 1;
 	}
 
 	// PUBLIC METHODS
