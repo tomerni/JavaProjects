@@ -1,10 +1,10 @@
 package fileprocessing.filter;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 
-public interface Filter {
+public interface Filter extends FileFilter {
 
-	ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
-			throws BadFilterException;
+	void validate() throws BadFilterException;
 }

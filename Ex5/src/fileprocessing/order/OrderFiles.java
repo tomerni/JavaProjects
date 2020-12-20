@@ -3,54 +3,30 @@ package fileprocessing.order;
 import java.io.*;
 import java.util.*;
 
-public class OrderFiles {
-
-	//private final List<String> validOrders = Arrays.asList("abs", "type", "size");
-
-	private final ArrayList<File> filteredFiles;
-
-	private final String orderLine;
-
-
-	// CONSTRUCTOR
-
-	public OrderFiles(ArrayList<File> filteredFiles, String orderLine) {
-		this.filteredFiles = filteredFiles;
-		this.orderLine = orderLine;
-	}
+public abstract class OrderFiles {
 
 	// PRIVATE METHODS
 
-	private void quickSort(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
+	private static void quickSort(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
 		if (low < high) {
-            /* pi is partitioning index, arr[pi] is
-              now at right place */
 			int pi = partition(list, low, high, comparator);
-
-			// Recursively sort elements before
-			// partition and after partition
 			quickSort(list, low, pi - 1, comparator);
 			quickSort(list, pi + 1, high, comparator);
 		}
 	}
 
-	private int partition(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
+	private static int partition(ArrayList<File> list, int low, int high, Comparator<File> comparator) {
 		File pivot = list.get(high);
-		int i = (low - 1); // index of smaller element
+		int i = (low - 1);
 		for (int j = low; j < high; j++) {
-			// If current element is smaller than the pivot
 			int compareResult = comparator.compare(list.get(j), pivot);
 			if (compareResult < 0) {
 				i++;
-
-				// swap arr[i] and arr[j]
 				File temp = list.get(i);
 				list.set(i, list.get(j));
 				list.set(j, temp);
 			}
 		}
-
-		// swap arr[i+1] and arr[high] (or pivot)
 		File temp = list.get(i + 1);
 		list.set(i + 1, list.get(high));
 		list.set(high, temp);
@@ -60,7 +36,8 @@ public class OrderFiles {
 
 	// PUBLIC METHODS
 
-	public ArrayList<String> order() throws BadOrderNameException {
+	public static ArrayList<String> order(ArrayList<File> filteredFiles, String orderLine)
+			throws BadOrderNameException {
 		String[] splitString = orderLine.split("#");
 		ArrayList<String> namesList = new ArrayList<>();
 		String typeOfOrder = splitString[0];

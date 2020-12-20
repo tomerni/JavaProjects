@@ -1,56 +1,57 @@
 package fileprocessing.filter;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class SizeFilter implements Filter {
 
 	private final String filterName;
 
-	public SizeFilter(String filter) {
-		filterName = filter;
+	private final String[] splitString;
+
+	private final boolean flag;
+
+	public SizeFilter(String filterName, String[] splitString, boolean flag) {
+		this.filterName = filterName;
+		this.splitString = splitString;
+		this.flag = flag;
 	}
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
-			throws BadFilterException {
-		ArrayList<File> results = new ArrayList<>();
+	@Override
+	public void validate() throws BadFilterException {
 		if (filterName.equals("between")) {
-			FourWayMatcher<Long, Double, Double, Boolean> filter = betweenFilter();
 			double lowFilter = Double.parseDouble(splitString[1]);
 			double highFilter = Double.parseDouble(splitString[2]);
 			if (lowFilter < 0 || highFilter < 0 || highFilter < lowFilter) {
 				throw new BadFilterException();
 			}
-			for (File f : files) {
-				if (flag) {
-					if (filter.apply(f.length(), lowFilter, highFilter)) {
-						results.add(f);
-					}
-				} else {
-					if (!filter.apply(f.length(), lowFilter, highFilter)) {
-						results.add(f);
-					}
-				}
-			}
 		} else {
-			ThreeWayMatcher<Long, Double, Boolean> filter = greaterSmallerFilter();
 			double size = Double.parseDouble(splitString[1]);
 			if (size < 0) {
 				throw new BadFilterException();
 			}
-			for (File f : files) {
-				if (flag) {
-					if (filter.apply(f.length(), size)) {
-						results.add(f);
-					}
-				} else {
-					if (!filter.apply(f.length(), size)) {
-						results.add(f);
-					}
-				}
+		}
+	}
+
+	@Override
+	public boolean accept(File pathname) {
+		if (filterName.equals("between")) {
+			FourWayMatcher<Long, Double, Double, Boolean> filter = betweenFilter();
+			double lowFilter = Double.parseDouble(splitString[1]);
+			double highFilter = Double.parseDouble(splitString[2]);
+			if (flag) {
+				return filter.apply(pathname.length(), lowFilter, highFilter) && pathname.isFile();
+			} else {
+				return !filter.apply(pathname.length(), lowFilter, highFilter) && pathname.isFile();
+			}
+		} else {
+			ThreeWayMatcher<Long, Double, Boolean> filter = greaterSmallerFilter();
+			double size = Double.parseDouble(splitString[1]);
+			if (flag) {
+				return filter.apply(pathname.length(), size) && pathname.isFile();
+			} else {
+				return !filter.apply(pathname.length(), size) && pathname.isFile();
 			}
 		}
-		return results;
 	}
 
 	private ThreeWayMatcher<Long, Double, Boolean> greaterSmallerFilter() {

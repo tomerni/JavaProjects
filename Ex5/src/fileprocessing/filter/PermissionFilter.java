@@ -8,34 +8,60 @@ public class PermissionFilter implements Filter{
 
 	private final String filterName;
 
-	public PermissionFilter(String filterName) {
+	private final String[] splitString;
+
+	private boolean flag;
+
+	public PermissionFilter(String filterName, String[] splitString, boolean flag) {
 		this.filterName = filterName;
+		this.splitString = splitString;
+		this.flag = flag;
 	}
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
-			throws BadFilterException {
-		Function<File, Boolean> filter = filterFinder();
-		ArrayList<File> results = new ArrayList<>();
+	@Override
+	public void validate() throws BadFilterException {
 		if (!(splitString[1].equals("NO") || splitString[1].equals("YES"))) {
 			throw new BadFilterException();
 		}
+	}
+
+	@Override
+	public boolean accept(File pathname) {
+		Function<File, Boolean> filter = filterFinder();
 		if (splitString[1].equals("NO")) {
 			flag = !flag;
 		}
-		for (File f : files) {
-			if (flag) {
-				if (filter.apply(f)) {
-					results.add(f);
-				}
-			}
-			else {
-				if (!filter.apply(f)) {
-					results.add(f);
-				}
-			}
+		if (flag) {
+			return filter.apply(pathname) && pathname.isFile();
+		} else {
+			return !filter.apply(pathname) && pathname.isFile();
 		}
-		return results;
 	}
+
+//	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
+//			throws BadFilterException {
+//		Function<File, Boolean> filter = filterFinder();
+//		ArrayList<File> results = new ArrayList<>();
+//		if (!(splitString[1].equals("NO") || splitString[1].equals("YES"))) {
+//			throw new BadFilterException();
+//		}
+//		if (splitString[1].equals("NO")) {
+//			flag = !flag;
+//		}
+//		for (File f : files) {
+//			if (flag) {
+//				if (filter.apply(f) && f.isFile()) {
+//					results.add(f);
+//				}
+//			}
+//			else {
+//				if (!filter.apply(f) && f.isFile()) {
+//					results.add(f);
+//				}
+//			}
+//		}
+//		return results;
+//	}
 
 	private Function<File, Boolean> filterFinder() {
 		switch (filterName) {

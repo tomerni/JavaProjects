@@ -1,32 +1,34 @@
 package fileprocessing.filter;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class NameFilter implements Filter {
 
 	private final String filterName;
 
-	public NameFilter(String filterName) {
+	private final String[] splitString;
+
+	private final boolean flag;
+
+	public NameFilter(String filterName, String[] splitString, boolean flag) {
 		this.filterName = filterName;
+		this.splitString = splitString;
+		this.flag = flag;
 	}
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
-		ArrayList<File> results = new ArrayList<>();
+	@Override
+	public boolean accept(File pathname) {
 		ThreeWayMatcher<String, String, Boolean> filter = filterFinder();
-		for (File f : files) {
-			if (flag) {
-				if (filter.apply(f.getName(), splitString[1])) {
-					results.add(f);
-				}
-			}
-			else {
-				if (!filter.apply(f.getName(), splitString[1])) {
-					results.add(f);
-				}
-			}
+		if (flag) {
+			return filter.apply(pathname.getName(), splitString[1]) && pathname.isFile();
+		} else {
+			return !filter.apply(pathname.getName(), splitString[1]) && pathname.isFile();
 		}
-		return results;
+	}
+
+	@Override
+	public void validate() {
+
 	}
 
 	private ThreeWayMatcher<String, String, Boolean> filterFinder() {
