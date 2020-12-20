@@ -12,11 +12,12 @@ public class PermissionFilter implements Filter{
 		this.filterName = filterName;
 	}
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
+	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
+			throws BadFilterException {
 		Function<File, Boolean> filter = filterFinder();
-		ArrayList<File> results = new ArrayList<File>();
+		ArrayList<File> results = new ArrayList<>();
 		if (!(splitString[1].equals("NO") || splitString[1].equals("YES"))) {
-			return null;
+			throw new BadFilterException();
 		}
 		if (splitString[1].equals("NO")) {
 			flag = !flag;
@@ -28,7 +29,7 @@ public class PermissionFilter implements Filter{
 				}
 			}
 			else {
-				if (filter.apply(f)) {
+				if (!filter.apply(f)) {
 					results.add(f);
 				}
 			}
@@ -38,13 +39,12 @@ public class PermissionFilter implements Filter{
 
 	private Function<File, Boolean> filterFinder() {
 		switch (filterName) {
-		case ("writeable"):
+		case "writable":
 			return File::canWrite;
-		case ("executable"):
+		case "executable":
 			return File::canExecute;
-		case ("hidden"):
+		default:
 			return File::isHidden;
 		}
-		return null;
 	}
 }

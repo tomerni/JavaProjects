@@ -5,7 +5,7 @@ import java.util.*;
 
 public class OrderFiles {
 
-	private final List<String> validOrders = Arrays.asList("abs", "type", "size");
+	//private final List<String> validOrders = Arrays.asList("abs", "type", "size");
 
 	private final ArrayList<File> filteredFiles;
 
@@ -62,11 +62,8 @@ public class OrderFiles {
 
 	public ArrayList<String> order() throws BadOrderNameException {
 		String[] splitString = orderLine.split("#");
-		ArrayList<String> namesList = new ArrayList<String>();
+		ArrayList<String> namesList = new ArrayList<>();
 		String typeOfOrder = splitString[0];
-		if (!validOrders.contains(splitString[0])) {
-			throw new BadOrderNameException();
-		}
 		Comparator<File> comp = ComparatorFactory.createComparator(typeOfOrder);
 		quickSort(filteredFiles, 0, filteredFiles.size() - 1, comp);
 		if (splitString.length == 2 && splitString[1].equals("REVERSE")) {
@@ -75,6 +72,6 @@ public class OrderFiles {
 		for (File f : filteredFiles) {
 			namesList.add(f.getName());
 		}
-		return namesList;
+		return namesList; // CAN BE EMPTY
 	}
 }

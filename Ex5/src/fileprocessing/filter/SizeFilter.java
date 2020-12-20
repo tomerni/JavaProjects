@@ -2,7 +2,6 @@ package fileprocessing.filter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 public class SizeFilter implements Filter {
 
@@ -12,30 +11,46 @@ public class SizeFilter implements Filter {
 		filterName = filter;
 	}
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
-		ArrayList<File> results = new ArrayList<File>();
+	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
+			throws BadFilterException {
+		ArrayList<File> results = new ArrayList<>();
 		if (filterName.equals("between")) {
-			return null;
+			FourWayMatcher<Long, Double, Double, Boolean> filter = betweenFilter();
+			double lowFilter = Double.parseDouble(splitString[1]);
+			double highFilter = Double.parseDouble(splitString[2]);
+			if (lowFilter < 0 || highFilter < 0 || highFilter < lowFilter) {
+				throw new BadFilterException();
+			}
+			for (File f : files) {
+				if (flag) {
+					if (filter.apply(f.length(), lowFilter, highFilter)) {
+						results.add(f);
+					}
+				} else {
+					if (!filter.apply(f.length(), lowFilter, highFilter)) {
+						results.add(f);
+					}
+				}
+			}
 		} else {
 			ThreeWayMatcher<Long, Double, Boolean> filter = greaterSmallerFilter();
 			double size = Double.parseDouble(splitString[1]);
 			if (size < 0) {
-				return null;
+				throw new BadFilterException();
 			}
 			for (File f : files) {
 				if (flag) {
 					if (filter.apply(f.length(), size)) {
 						results.add(f);
 					}
-				}
-				else {
+				} else {
 					if (!filter.apply(f.length(), size)) {
 						results.add(f);
 					}
 				}
 			}
-			return results;
 		}
+		return results;
 	}
 
 	private ThreeWayMatcher<Long, Double, Boolean> greaterSmallerFilter() {
@@ -46,8 +61,8 @@ public class SizeFilter implements Filter {
 		}
 	}
 
-	private FourWayMatcher<Double, Double, Double, Boolean> betweenFilter() {
-		return (Double size, Double lowFilter, Double highFilter) ->
+	private FourWayMatcher<Long, Double, Double, Boolean> betweenFilter() {
+		return (Long size, Double lowFilter, Double highFilter) ->
 				(size / 1024f >= lowFilter && size / 1024f <= highFilter);
 	}
 }

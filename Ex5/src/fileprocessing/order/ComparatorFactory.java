@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class ComparatorFactory {
 
-	public static Comparator<File> createComparator(String orderLine) {
+	public static Comparator<File> createComparator(String orderLine) throws BadOrderNameException {
 		switch (orderLine) {
 			case "abs":
 				return new AbsComparator();
@@ -14,6 +14,6 @@ public class ComparatorFactory {
 			case "size":
 				return new SizeComparator();
 		}
-		return new AbsComparator();
+		throw new BadOrderNameException();
 	}
 }

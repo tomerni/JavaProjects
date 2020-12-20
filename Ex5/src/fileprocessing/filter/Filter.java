@@ -5,5 +5,6 @@ import java.util.ArrayList;
 
 public interface Filter {
 
-	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag);
+	ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag)
+			throws BadFilterException;
 }

@@ -2,14 +2,8 @@ package fileprocessing.filter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FilterFiles {
-
-	private final List<String> validFilters = Arrays.asList("greater_than", "between", "smaller_than",
-															"file", "contains", "prefix", "suffix",
-															"writable", "executable", "hidden", "all");
 
 	private final ArrayList<File> files;
 
@@ -21,5 +15,19 @@ public class FilterFiles {
 	public FilterFiles(ArrayList<File> files, String filterLine) {
 		this.files = files;
 		this.filterLine = filterLine;
+	}
+
+	public ArrayList<File> filter() throws BadFilterException {
+		String[] splitString = filterLine.split("#");
+		String typeOfFilter = splitString[0];
+		if (typeOfFilter.equals("all")) {
+			return files;
+		}
+		Filter curFilter = FilterFactory.createFilter(typeOfFilter);
+		if (splitString[splitString.length - 1].equals("NOT")) {
+			return curFilter.filter(splitString, files, false);
+		} else {
+			return curFilter.filter(splitString, files, true);
+		}
 	}
 }

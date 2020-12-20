@@ -12,7 +12,7 @@ public class NameFilter implements Filter {
 	}
 
 	public ArrayList<File> filter(String[] splitString, ArrayList<File> files, boolean flag) {
-		ArrayList<File> results = new ArrayList<File>();
+		ArrayList<File> results = new ArrayList<>();
 		ThreeWayMatcher<String, String, Boolean> filter = filterFinder();
 		for (File f : files) {
 			if (flag) {
@@ -37,9 +37,8 @@ public class NameFilter implements Filter {
 			return String::contains;
 		case ("prefix"):
 			return String::startsWith;
-		case ("suffix"):
+		default:
 			return String::endsWith;
 		}
-		return null;
 	}
 }
