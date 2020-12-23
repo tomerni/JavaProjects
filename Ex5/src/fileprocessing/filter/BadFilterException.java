@@ -1,10 +1,17 @@
 package fileprocessing.filter;
 
+/**
+ * implements a bad filter exception
+ */
 public class BadFilterException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    // for serialization
+    private static final long serialVersionUID = 1L;
 
-	public BadFilterException() {
-		super();
-	}
+    /**
+     * Constructor
+     */
+    public BadFilterException() {
+        super();
+    }
 }

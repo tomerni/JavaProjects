@@ -1,10 +1,15 @@
 package fileprocessing.filter;
 
-import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
 
+/**
+ * filter interface that extends the FileFilter interface
+ */
 public interface Filter extends FileFilter {
 
-	void validate() throws BadFilterException;
+    /**
+     * validates that the filter is valid
+     * @throws BadFilterException exception if the filter is wrong
+     */
+    void validate() throws BadFilterException;
 }
