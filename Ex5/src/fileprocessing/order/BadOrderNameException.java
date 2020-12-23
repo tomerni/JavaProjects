@@ -1,10 +1,17 @@
 package fileprocessing.order;
 
+/**
+ * bad order exception
+ */
 public class BadOrderNameException extends Exception {
 
-	private	static final long serialVersionUID = 1L;
+    // for serialization
+    private static final long serialVersionUID = 1L;
 
-	public BadOrderNameException () {
-		super();
-	}
+    /**
+     * Constructor
+     */
+    public BadOrderNameException() {
+        super();
+    }
 }
