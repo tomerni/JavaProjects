@@ -15,7 +15,7 @@ public class FilterFactory {
 			return new NameFilter(filterName, splitString, flag);
 		}
 		if (filterName.equals("all")) {
-			return new AllFilter(flag);
+			return new AllFilter(flag, splitString);
 		}
 		throw new BadFilterException();
 	}

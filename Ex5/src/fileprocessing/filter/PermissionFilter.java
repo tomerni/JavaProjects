@@ -19,6 +19,9 @@ public class PermissionFilter implements Filter{
 
 	@Override
 	public void validate() throws BadFilterException {
+		if(splitString.length == 2 && !splitString[splitString.length-1].equals("NOT")) {
+			throw new BadFilterException();
+		}
 		if (!(splitString[1].equals("NO") || splitString[1].equals("YES"))) {
 			throw new BadFilterException();
 		}

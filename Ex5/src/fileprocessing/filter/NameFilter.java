@@ -27,8 +27,10 @@ public class NameFilter implements Filter {
 	}
 
 	@Override
-	public void validate() {
-
+	public void validate() throws BadFilterException {
+		if (splitString.length == 3 && !splitString[splitString.length-1].equals("NOT")) {
+			throw new BadFilterException();
+		}
 	}
 
 	private ThreeWayMatcher<String, String, Boolean> filterFinder() {

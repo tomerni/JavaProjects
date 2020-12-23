@@ -6,12 +6,18 @@ public class AllFilter implements Filter {
 
 	private final boolean flag;
 
-	public AllFilter(boolean flag) {
+	private final String[] splitString;
+
+	public AllFilter(boolean flag, String[] splitString) {
 		this.flag = flag;
+		this.splitString = splitString;
 	}
 
 	@Override
-	public void validate(){
+	public void validate() throws BadFilterException {
+		if(splitString.length == 2 && !splitString[splitString.length-1].equals("NOT")) {
+			throw new BadFilterException();
+		}
 	}
 
 	@Override

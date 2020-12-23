@@ -21,11 +21,17 @@ public class SizeFilter implements Filter {
 		if (filterName.equals("between")) {
 			double lowFilter = Double.parseDouble(splitString[1]);
 			double highFilter = Double.parseDouble(splitString[2]);
+			if(splitString.length == 4 && !splitString[splitString.length-1].equals("NOT")) {
+				throw new BadFilterException();
+			}
 			if (lowFilter < 0 || highFilter < 0 || highFilter < lowFilter) {
 				throw new BadFilterException();
 			}
 		} else {
 			double size = Double.parseDouble(splitString[1]);
+			if(splitString.length == 3 && !splitString[splitString.length-1].equals("NOT")) {
+				throw new BadFilterException();
+			}
 			if (size < 0) {
 				throw new BadFilterException();
 			}
