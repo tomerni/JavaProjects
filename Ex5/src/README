@@ -1,0 +1,74 @@
+tomerni
+
+
+
+
+=============================
+=      File description     =
+=============================
+DirectoryProcessor.java
+SectionProcessor.java - abstract class that handles the processing of a section
+BadFormatException.java
+BadSubSectionException.java
+InvalidUsageExcpetion.java
+
+FilterFIles.java - abstract class that handles the filtering of the files
+Filter.java - interface the extend the FileFitler interface
+FilterFactory.java - creates the relevant filter
+AllFilter.java
+NameFilter.java - groups the name filters (file, contains, prefix, suffix)
+SizeFilter.java - groups the size filters (greater_than, smaller_than, between)
+PermissionFilter.java - groups the permission filters (writable, hidden, executable)
+ThreeWayMatcher.java - functional interface for two variables
+FourWayMatcher.java - functional interface for three variables
+BadFilterException.java
+
+OrderFiles.java - abstract class that handles the ordering of the filtered files
+ComparatorFactory.java - creates the relevant comparator
+AbsComparator.java
+SizeComparator.java
+TypeComaparator.java
+BadOrderNameException.java
+
+=============================
+=        Questions          =
+=============================
+- DESIGN CHOICES:
+	- I divided the project to three main parts - 
+		sub-package that handles the filtering, 
+		sub-package that handles the ordering 
+		and the main classes that integrate everything (SectionProcessor and DirectoryProcessor).
+	  
+	  - FILTERING - I tried to make the filtering process as generic as possible. I created an interface that extends java's FileFitler
+	    interface by adding a method that checks if the filter is valid and can throw exceptions. By extending FileFitler it was quite easy to
+		filter the files in the path. Moreover, I didn't create a class to every filter, instead I grouped filters that are close to each other
+		(for example name filters). By doing that, I reused a lot of code and just needed to enter the right filter.
+		I created a FilterFactory class which is responssible for returning the right filter. By using the Filter interface (which extends FileFitler)
+		the FilterFiles class that is responssible for actually filtering didn't need to know the specific fitler type.
+	  
+	  - ORDERING - I implemented three comparators for every kind of order. The OrderFiles class was responssible for ordering the files
+	    and by using a ComparatorFactory, the class placed the right comparator in the sort method.
+		
+	  - SectionProcessor - this class is responssible for processing a single section in the command line. By using this class, I was
+	    able to make the classes and methods much more short and undrestandable.
+	
+	  - DirectoryProcessor - the main class that handles all of the processing process.
+		
+	- The main goals of my design were - modularity (each process is independet and very easy to test and debug), code reuse (by grouping
+	  the filters and orders, and by using the Filter interface), easy to extend the current functionallity (by using factories and generic
+	  interfaces) and to follow the single choise principle.
+
+- EXCEPTIONS:
+	- Type 1 exceptions - I implemented two Type 1 exceptions - one for filters and one for orders. Each exception was implemented in
+	  the relevant sub-package. Further more, these exceptions are relevant to a certain section and thats way I chose to handle them
+      in the SectionProcessor class. The main function (in the DirectoryProcessor) is unaware of those problems and I think that it make
+	  more sense to handle them in the section level.
+	- Type 2 exceptions - I implemented three Type 2 exceptions - invalid usage, bad sub-section name and bad format of the commands file.
+	  Because those are major exceptions, I implemented them in the main package and the main function was responssible for taking care
+	  of them.
+	  
+- SORTING:
+	- I implemented the quick sort algorithem which is O(nlogn). I used the ArrayList data structre because it has very useful functions
+	  like adding in a certain location. It first I wanted to use this data structre so that it will be easy to reverse the results 
+	  (if the REVERSE flag was on) by using Collection.reverse, but after reading the questions forum I implemented the reverse by
+	  myself.
