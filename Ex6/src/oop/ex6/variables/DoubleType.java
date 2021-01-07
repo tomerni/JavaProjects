@@ -6,18 +6,15 @@ import java.util.regex.Pattern;
 
 public class DoubleType implements Type {
     @Override
-    public void valueVerifier(String value, HashMap<String, String[]> curHash) throws RuntimeException {
+    public void valueVerifier(String value, HashMap<String, String[]> curHash,
+                              HashMap<String, String[]> fatherHash) throws RuntimeException {
         Pattern valuePattern = Pattern.compile("[+-]?([\\d]*[.])?[\\d]+"); // finds a double
         Matcher valueMatcher = valuePattern.matcher(value);
         boolean matchFound = valueMatcher.matches();
         if(matchFound){
             return;
         }
-        boolean isAssigned = searchForAssignedValue(value, curHash);
-        if(!isAssigned) {
-            throw new RuntimeException();
-        }
-        String assignedValueType = curHash.get(value)[0];
+        String assignedValueType = searchForType(value, curHash, fatherHash);
         if(!(assignedValueType.equals("int") || assignedValueType.equals("double"))){
             throw new RuntimeException();
         }
