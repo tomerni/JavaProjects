@@ -9,7 +9,7 @@ public interface Type {
 
 	// TODO: Implement a class for each pattern
 	default void nameVerifier(String name, HashMap<String, String[]> curHash,
-							  HashMap<String, String[]> fatherHash, boolean isDec) throws RuntimeException {
+							  HashMap<String, String[]> fatherHash, boolean isDec) throws VariableException {
 		Pattern namePattern = Pattern.compile("^_[\\w]+|^[a-zA-Z][\\w]*");
 		Matcher nameMatcher = namePattern.matcher(name);
 		boolean matchFound = nameMatcher.matches();
@@ -17,11 +17,11 @@ public interface Type {
 						   (!curHash.containsKey(name) && !isDec && fatherHash.containsKey(name)))) {
 			return;
 		}
-		throw new RuntimeException();
+		throw new IllegalVarNameException();
 	}
 
 	void valueVerifier(String value, HashMap<String, String[]> curHash,
-					   HashMap<String, String[]> fatherHash) throws RuntimeException;
+					   HashMap<String, String[]> fatherHash) throws VariableException;
 
 	default boolean searchForAssignedValue(String value, HashMap<String, String[]> curHash) {
 		if (curHash.containsKey(value)) {
@@ -31,11 +31,11 @@ public interface Type {
 	}
 
 	default String searchForType(String value, HashMap<String, String[]> curHash,
-								 HashMap<String, String[]> fatherHash) throws RuntimeException{
+								 HashMap<String, String[]> fatherHash) throws VariableException{
 		boolean isAssignedCur = searchForAssignedValue(value, curHash);
 		boolean isAssignedFather = searchForAssignedValue(value, fatherHash);
 		if(!(isAssignedCur || isAssignedFather)) {
-			throw new RuntimeException();
+			throw new UsageOfNonAssignedException();
 		}
 		String assignedValueType;
 		if(isAssignedCur) {

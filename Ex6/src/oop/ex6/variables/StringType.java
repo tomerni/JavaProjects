@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class StringType implements Type {
     @Override
     public void valueVerifier(String value, HashMap<String, String[]> curHash,
-                              HashMap<String, String[]> fatherHash) throws RuntimeException{
+                              HashMap<String, String[]> fatherHash) throws VariableException{
         Pattern valuePattern = Pattern.compile("\"[^\",'\\\\]*\"");
         Matcher valueMatcher = valuePattern.matcher(value);
         boolean matchFound = valueMatcher.find();
@@ -16,7 +16,7 @@ public class StringType implements Type {
         }
         String assignedValueType = searchForType(value, curHash, fatherHash);
         if(!(assignedValueType.equals("String"))){
-            throw new RuntimeException();
+            throw new IllegalValueAssignmentException();
         }
     }
 

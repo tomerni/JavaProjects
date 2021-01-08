@@ -13,7 +13,7 @@ public class BooleanType implements Type {
 
     @Override
     public void valueVerifier(String value, HashMap<String, String[]> curHash,
-                              HashMap<String, String[]> fatherHash) throws RuntimeException{
+                              HashMap<String, String[]> fatherHash) throws VariableException{
         if (value.equals(TRUE) || value.equals(FALSE)){
             return;
         }
@@ -26,7 +26,7 @@ public class BooleanType implements Type {
         String assignedValueType = searchForType(value, curHash, fatherHash);
         if(!(assignedValueType.equals("boolean") || assignedValueType.equals("int") ||
                 assignedValueType.equals("double"))){
-            throw new RuntimeException();
+            throw new IllegalValueAssignmentException();
         }
     }
 

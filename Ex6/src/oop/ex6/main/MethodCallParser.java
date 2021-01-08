@@ -1,6 +1,7 @@
 package oop.ex6.main;
 
 import oop.ex6.variables.Type;
+import oop.ex6.variables.VariableException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,8 @@ public class MethodCallParser {
 
 	public static boolean methodCallParser(String line, HashMap<String, ArrayList<Type>> methodMap,
 										   HashMap<String,
-			String[]> curHash, HashMap<String, String[]> fatherHash) throws RuntimeException {
+			String[]> curHash, HashMap<String, String[]> fatherHash) throws MethodException,
+																			VariableException {
 		Pattern methodNamePattern = Pattern.compile("^\\s*[\\w]+\\s*\\(");
 		Matcher methodNameMatcher = methodNamePattern.matcher(line);
 		boolean methodNameFound = methodNameMatcher.find();
@@ -20,7 +22,7 @@ public class MethodCallParser {
 		}
 		String methodName = line.substring(methodNameMatcher.start(), methodNameMatcher.end() - 1).trim();
 		if (!methodMap.containsKey(methodName)) {
-			throw new RuntimeException();
+			throw new IllegalMethodCallException();
 		}
 		String listOfArgs = line.substring(methodNameMatcher.end());
 		methodArgumentsVerifier(listOfArgs, methodMap.get(methodName), curHash ,fatherHash);
@@ -29,21 +31,22 @@ public class MethodCallParser {
 
 
 	private static void methodArgumentsVerifier(String listOfArgs, ArrayList<Type> listOfTypes,
-												HashMap<String, String[]> curHash, HashMap<String, String[]> fatherHash) throws RuntimeException {
+												HashMap<String, String[]> curHash, HashMap<String,
+			String[]> fatherHash) throws MethodException, VariableException {
 		Pattern argPattern = Pattern.compile("[^=]+?([=].+?)?[,)]");
 		Matcher argMatcher = argPattern.matcher(listOfArgs);
 		int indexOfType = 0;
 		while (argMatcher.find()) {
 			if (indexOfType == listOfTypes.size()) {
-				throw new RuntimeException();
+				throw new IllegalArgumentsException();
 			}
-			String currentArg = listOfArgs.substring(argMatcher.start(), argMatcher.end() - 1);
+			String currentArg = listOfArgs.substring(argMatcher.start(), argMatcher.end() - 1).trim();
 			Type currentType = listOfTypes.get(indexOfType);
 			currentType.valueVerifier(currentArg, curHash, fatherHash);
 			indexOfType += 1;
 		}
-		if (indexOfType < (listOfTypes.size() - 1)) {
-			throw new RuntimeException();
+		if (indexOfType < (listOfTypes.size())) {
+			throw new IllegalArgumentsException();
 		}
 	}
 }

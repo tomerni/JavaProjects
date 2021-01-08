@@ -3,6 +3,7 @@ package oop.ex6.main;
 
 import oop.ex6.variables.Type;
 import oop.ex6.variables.TypesFactory;
+import oop.ex6.variables.VariableException;
 import oop.ex6.variables.VariableParser;
 
 import java.io.FileNotFoundException;
@@ -31,9 +32,13 @@ public class GlobalParser {
 		scanner = new Scanner(new FileReader(fileName));
 	}
 
-	public void fileParse() throws RuntimeException {
+	public void fileParse() throws StructureException, VariableException, MethodException {
 		while (scanner.hasNext()) {
-			String line = (scanner.nextLine()).trim();
+			String line = (scanner.nextLine());
+			if (line.matches(".+//.*")){
+				throw new InvalidLineStructureException();
+			}
+			line = line.trim();
 			if(line.isEmpty() || line.startsWith("//")){
 				continue;
 			}
@@ -43,7 +48,7 @@ public class GlobalParser {
 				Matcher methodDecMatcher = methodDecPattern.matcher(line);
 				boolean methodDecFound = methodDecMatcher.find();
 				if (!methodDecFound) {
-					throw new RuntimeException();
+					throw new InvalidLineStructureException();
 				}
 				buildMethodString(line);
 			}
@@ -51,29 +56,36 @@ public class GlobalParser {
 		methodParsing();
 	}
 
-	private void methodParsing() throws RuntimeException{
+	private void methodParsing() throws VariableException, MethodException, StructureException {
 		for(ArrayList<String> list : methodsImplementation){
-			Block curMethod = new Block(list, globalVarsMap, true);
+			HashMap<String, String[]> fatherHash = new HashMap<>(globalVarsMap);
+			Block curMethod = new Block(list, fatherHash, true);
 			curMethod.parseScope();
 		}
 	}
 
-	private void buildMethodString(String line) throws RuntimeException {
+	private void buildMethodString(String line) throws StructureException, VariableException {
 		ArrayList<String> curMethod = new ArrayList<>();
 		curMethod.add(line.trim());
 		signatureVerifier(line);
 		int parenthesis = 1;
 		while (parenthesis != 0) {
 			if (!scanner.hasNext()) {
-				throw new RuntimeException();
+				throw new InvalidMethodStructureException();
+			}
+			if (line.matches(".+//.*")){
+				throw new InvalidLineStructureException();
 			}
 			line = scanner.nextLine().trim();
+			if(line.isEmpty() || line.startsWith("//")){
+				continue;
+			}
 			if (line.endsWith("{")) { // TODO: Change condition to something that can capture spaces
 				parenthesis++;
 			} else if (line.equals("}")) {
 				parenthesis--;
 			} else if (line.startsWith("void")) {
-				throw new RuntimeException();
+				throw new InvalidMethodStructureException();
 			}
 			curMethod.add(line);
 		}
@@ -82,10 +94,10 @@ public class GlobalParser {
 			methodsImplementation.add(curMethod);
 			return;
 		}
-		throw new RuntimeException();
+		throw new InvalidMethodStructureException();
 	}
 
-	private boolean parseGlobalVariables(String line) throws RuntimeException {
+	private boolean parseGlobalVariables(String line) throws VariableException {
 		Pattern varInitPattern = Pattern.compile("^(final\\s)?\\s*(int|boolean|double|char|String)\\s+[^;]*;\\s*");
 		Matcher varInitMatcher = varInitPattern.matcher(line);
 		boolean varInitFound = varInitMatcher.find();
@@ -99,7 +111,7 @@ public class GlobalParser {
 		return false;
 	}
 
-	private void signatureVerifier(String line) throws RuntimeException {
+	private void signatureVerifier(String line) throws StructureException, VariableException {
 		Pattern voidPattern = Pattern.compile("^\\s*void\\s+");
 		Matcher voidMatcher = voidPattern.matcher(line);
 		boolean voidFound = voidMatcher.find();
@@ -108,9 +120,12 @@ public class GlobalParser {
 		Pattern namePattern = Pattern.compile("^_[\\w]+[\\s]*\\(|^[a-zA-Z][\\w]*[\\s]*\\(");
 		Matcher nameMatcher = namePattern.matcher(line);
 		boolean matchFound = nameMatcher.find();
+		if(!matchFound){
+			throw new InvalidMethodStructureException();
+		}
 		String methodName = line.substring(nameMatcher.start(), nameMatcher.end() - 1);
-		if (!(matchFound && !methodMap.containsKey(methodName))) {
-			throw new RuntimeException();
+		if (methodMap.containsKey(methodName)){
+			throw new InvalidMethodStructureException();
 		}
 		line = (line.substring((nameMatcher.end() - 1))).trim();
 		ArrayList<Type> typesOfParameters = parameterListVerifier(line);
@@ -118,14 +133,16 @@ public class GlobalParser {
 	}
 
 
-	private ArrayList<Type> parameterListVerifier(String listOfParameters) throws RuntimeException {
+	private ArrayList<Type> parameterListVerifier(String listOfParameters)
+			throws StructureException, VariableException {
 		Pattern allParamsPattern = Pattern.compile("\\(([\\w\\s,]*)\\)");
 		Matcher allParamMatcher = allParamsPattern.matcher(listOfParameters);
 		boolean allParamFound = allParamMatcher.find();
 		if(!allParamFound) {
-			throw new RuntimeException();
+			throw new InvalidMethodStructureException();
 		}
-		String allParams = allParamMatcher.group(1);
+		String allParams = (allParamMatcher.group(1)).trim();
+
 		if (allParams.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -137,15 +154,12 @@ public class GlobalParser {
 			Matcher paramListMatcher = paramListPattern.matcher(s);
 			boolean paramFound = paramListMatcher.find();
 			if (!paramFound) {
-				throw new RuntimeException();
+				throw new InvalidMethodStructureException();
 			}
 			Type paramType = TypesFactory.createTypes(paramListMatcher.group(2));
-			paramType.nameVerifier(paramListMatcher.group(3), globalVarsMap, new HashMap<>(), true);
+			paramType.nameVerifier(paramListMatcher.group(3), new HashMap<>(), new HashMap<>(), true);
 			typesOfParameters.add(paramType);
 		}
 		return typesOfParameters;
 	}
-
-
-
 }

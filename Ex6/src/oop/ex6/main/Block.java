@@ -1,9 +1,7 @@
 package oop.ex6.main;
 
 
-import oop.ex6.variables.BooleanType;
-import oop.ex6.variables.Type;
-import oop.ex6.variables.VariableParser;
+import oop.ex6.variables.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +26,8 @@ public class Block {
 		this.isMethod = isMethod;
 	}
 
-	public ArrayList<String> parseScope() throws RuntimeException {
+	public ArrayList<String> parseScope()
+			throws VariableException, MethodException, StructureException {
 		Iterator<String> iter = scopeLines.iterator();
 		validateFormat(iter.next());
 		while (iter.hasNext()) {
@@ -36,7 +35,8 @@ public class Block {
 			if (parseVariables(line)) {
 				continue;
 			}
-			if (line.startsWith("if ") || line.startsWith("while ")) {
+
+			if ((line.startsWith("if ") || line.startsWith("if(") || line.startsWith("while ") || line.startsWith("while(")) && line.endsWith("{")) {
 				HashMap<String, String[]> innerBlockHash = new HashMap<>();
 				innerBlockHash.putAll(fatherHash);
 				innerBlockHash.putAll(curHash);
@@ -57,14 +57,14 @@ public class Block {
 			if (line.equals("}")) {
 				break;
 			}
-			throw new RuntimeException();
+			throw new InvalidLineStructureException();
 		}
 		ArrayList<String> remainingLines = new ArrayList<>();
 		iter.forEachRemaining(remainingLines::add);
 		return remainingLines;
 	}
 
-	private boolean parseVariables(String line) throws RuntimeException {
+	private boolean parseVariables(String line) throws VariableException {
 		Pattern varInitPattern = Pattern
 				.compile("^(final\\s)?\\s*(int|boolean|double|char|String)\\s+[^;]*;\\s*");
 		Matcher varInitMatcher = varInitPattern.matcher(line);
@@ -79,11 +79,14 @@ public class Block {
 		return false;
 	}
 
-	private void validateFormat(String line) throws RuntimeException {
+	private void validateFormat(String line) throws VariableException, StructureException {
 		if (!isMethod) {
 			Pattern conditionPattern = Pattern.compile("\\((.+)\\)");
 			Matcher conditionMatcher = conditionPattern.matcher(line);
 			boolean conditionFound = conditionMatcher.find();
+			if(!conditionFound){
+				throw new IllegalConditionStructure();
+			}
 			String conditions = conditionMatcher.group(1);
 			String[] eachCondition = conditions.split("&&|\\|\\|", -1);
 			Type booleanType = new BooleanType();
@@ -96,14 +99,14 @@ public class Block {
 		}
 	}
 
-	private void methodFormatValidate(String line) throws RuntimeException {
+	private void methodFormatValidate(String line) throws StructureException, VariableException {
 		Pattern allParamsPattern = Pattern.compile("\\(([\\w\\s,]*)\\)");
 		Matcher allParamMatcher = allParamsPattern.matcher(line);
 		boolean allParamFound = allParamMatcher.find();
 		if (!allParamFound) {
-			throw new RuntimeException();
+			throw new InvalidMethodStructureException();
 		}
-		String allParams = allParamMatcher.group(1);
+		String allParams = allParamMatcher.group(1).trim();
 		if (allParams.isEmpty()) {
 			return;
 		}
@@ -113,13 +116,13 @@ public class Block {
 													   "(int|boolean|char|double|String)" +
 													   "\\s+([\\w]+)\\s*");
 			Matcher paramListMatcher = paramListPattern.matcher(s);
-			boolean paramFound = paramListMatcher.find();
+			boolean paramFound = paramListMatcher.matches();
 			if (!paramFound) {
-				throw new RuntimeException();
+				throw new InvalidMethodStructureException();
 			}
 			String varName = paramListMatcher.group(3);
 			if(curHash.containsKey(varName)){
-				throw new RuntimeException();
+				throw new IllegalVarNameException();
 			}
 			String isFinal = "true";
 			if (paramListMatcher.group(1) == null) {

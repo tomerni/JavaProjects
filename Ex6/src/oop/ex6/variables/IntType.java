@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class IntType implements Type{
     @Override
     public void valueVerifier(String value, HashMap<String, String[]> curHash,
-                              HashMap<String, String[]> fatherHash) throws RuntimeException{
+                              HashMap<String, String[]> fatherHash) throws VariableException{
         Pattern valuePattern = Pattern.compile("[+-]?[\\d]+"); // finds a int
         Matcher valueMatcher = valuePattern.matcher(value);
         boolean matchFound = valueMatcher.matches();
@@ -16,7 +16,7 @@ public class IntType implements Type{
         }
         String assignedValueType = searchForType(value, curHash, fatherHash);
         if(!(assignedValueType.equals("int") )){
-            throw new RuntimeException();
+            throw new IllegalValueAssignmentException();
         }
     }
 
