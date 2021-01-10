@@ -1,8 +1,8 @@
 package oop.ex6.variables;
 
+import oop.ex6.main.PatternsKit;
+
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class BooleanType implements Type {
@@ -17,10 +17,7 @@ public class BooleanType implements Type {
         if (value.equals(TRUE) || value.equals(FALSE)){
             return;
         }
-        Pattern valuePattern = Pattern.compile("[+-]?([\\d]*[.])?[\\d]+"); // finds a double
-        Matcher valueMatcher = valuePattern.matcher(value);
-        boolean matchFound = valueMatcher.matches();
-        if(matchFound){
+        if(PatternsKit.matchPattern(value, PatternsKit.doubleTypeString)){
             return;
         }
         String assignedValueType = searchForType(value, curHash, fatherHash);

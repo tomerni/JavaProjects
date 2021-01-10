@@ -25,6 +25,7 @@ public class Sjavac {
             System.out.println("0");
         } catch (VariableException | MethodException | StructureException e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
             System.out.println("1");
         } catch (IOException e){
             System.err.println(e.getMessage());

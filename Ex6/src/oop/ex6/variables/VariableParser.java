@@ -1,8 +1,9 @@
 package oop.ex6.variables;
 
+import oop.ex6.main.PatternsKit;
+
 import java.util.HashMap;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class VariableParser {
 
@@ -10,21 +11,14 @@ public class VariableParser {
 
 	private final static String FALSE = "false";
 
-	// TODO: Notice that we assume the line contains only a single ';' at the end of it, and has no white
-	//  spaces at the beginning and at the end
-	// TODO: From line 42 on, divide into several methods
-	// TODO: Consider deleting the decParser method
-
 	public static void mainVariableParser(String line, HashMap<String, String[]> curHash, HashMap<String
 			, String[]> fatherHash) throws VariableException{
-		Pattern finalPattern = Pattern.compile("^\\s*final\\s+");
-		Matcher finalMatcher = finalPattern.matcher(line);
+		Matcher finalMatcher = PatternsKit.finalString.matcher(line);
 		boolean finalFound = finalMatcher.find();
 		if (finalFound) {
 			line = line.substring(finalMatcher.end());
 		}
-		Pattern typePattern = Pattern.compile("^\\s*(int|boolean|double|char|String)\\s+");
-		Matcher typeMatcher = typePattern.matcher(line);
+		Matcher typeMatcher = PatternsKit.validTypeString.matcher(line);
 		boolean decFound = typeMatcher.find();
 		if (decFound) {
 			String type = typeMatcher.group(1);

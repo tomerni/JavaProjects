@@ -1,17 +1,14 @@
 package oop.ex6.variables;
 
+import oop.ex6.main.PatternsKit;
+
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StringType implements Type {
     @Override
     public void valueVerifier(String value, HashMap<String, String[]> curHash,
                               HashMap<String, String[]> fatherHash) throws VariableException{
-        Pattern valuePattern = Pattern.compile("\"[^\",'\\\\]*\"");
-        Matcher valueMatcher = valuePattern.matcher(value);
-        boolean matchFound = valueMatcher.find();
-        if(matchFound){
+        if(PatternsKit.matchPattern(value, PatternsKit.stringTypeString)){
             return;
         }
         String assignedValueType = searchForType(value, curHash, fatherHash);

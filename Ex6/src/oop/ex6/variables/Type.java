@@ -1,8 +1,8 @@
 package oop.ex6.variables;
 
+import oop.ex6.main.PatternsKit;
+
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public interface Type {
@@ -10,10 +10,7 @@ public interface Type {
 	// TODO: Implement a class for each pattern
 	default void nameVerifier(String name, HashMap<String, String[]> curHash,
 							  HashMap<String, String[]> fatherHash, boolean isDec) throws VariableException {
-		Pattern namePattern = Pattern.compile("^_[\\w]+|^[a-zA-Z][\\w]*");
-		Matcher nameMatcher = namePattern.matcher(name);
-		boolean matchFound = nameMatcher.matches();
-		if (matchFound && ((!curHash.containsKey(name) && isDec) || (curHash.containsKey(name) && !isDec) ||
+		if (PatternsKit.matchPattern(name, PatternsKit.validNameString) && ((!curHash.containsKey(name) && isDec) || (curHash.containsKey(name) && !isDec) ||
 						   (!curHash.containsKey(name) && !isDec && fatherHash.containsKey(name)))) {
 			return;
 		}

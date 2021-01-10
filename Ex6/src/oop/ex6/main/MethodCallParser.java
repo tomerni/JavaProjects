@@ -6,7 +6,6 @@ import oop.ex6.variables.VariableException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MethodCallParser {
 
@@ -14,10 +13,9 @@ public class MethodCallParser {
 										   HashMap<String,
 			String[]> curHash, HashMap<String, String[]> fatherHash) throws MethodException,
 																			VariableException {
-		Pattern methodNamePattern = Pattern.compile("^\\s*[\\w]+\\s*\\(");
-		Matcher methodNameMatcher = methodNamePattern.matcher(line);
-		boolean methodNameFound = methodNameMatcher.find();
-		if (!methodNameFound) {
+		Matcher methodNameMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.methodNameString);
+
+		if (methodNameMatcher == null) {
 			return false;
 		}
 		String methodName = line.substring(methodNameMatcher.start(), methodNameMatcher.end() - 1).trim();
@@ -33,8 +31,7 @@ public class MethodCallParser {
 	private static void methodArgumentsVerifier(String listOfArgs, ArrayList<Type> listOfTypes,
 												HashMap<String, String[]> curHash, HashMap<String,
 			String[]> fatherHash) throws MethodException, VariableException {
-		Pattern argPattern = Pattern.compile("[^=]+?([=].+?)?[,)]");
-		Matcher argMatcher = argPattern.matcher(listOfArgs);
+		Matcher argMatcher = PatternsKit.methodArgsString.matcher(listOfArgs);
 		int indexOfType = 0;
 		while (argMatcher.find()) {
 			if (indexOfType == listOfTypes.size()) {

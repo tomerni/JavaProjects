@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Block {
 
-	private HashMap<String, String[]> fatherHash;
+	private final HashMap<String, String[]> fatherHash;
 
-	private HashMap<String, String[]> curHash;
+	private final HashMap<String, String[]> curHash;
 
 	private ArrayList<String> scopeLines;
 
-	private boolean isMethod;
+	private final boolean isMethod;
 
 	Block(ArrayList<String> scopeLines, HashMap<String, String[]> fatherHash, boolean isMethod) {
 		curHash = new HashMap<>();
@@ -64,15 +63,10 @@ public class Block {
 		return remainingLines;
 	}
 
+
 	private boolean parseVariables(String line) throws VariableException {
-		Pattern varInitPattern = Pattern
-				.compile("^(final\\s)?\\s*(int|boolean|double|char|String)\\s+[^;]*;\\s*");
-		Matcher varInitMatcher = varInitPattern.matcher(line);
-		boolean varInitFound = varInitMatcher.find();
-		Pattern varAssignPattern = Pattern.compile("^[\\w]+\\s*=\\s*[\\w]+\\s*;\\s*");
-		Matcher varAssignMatcher = varAssignPattern.matcher(line);
-		boolean varAssignFound = varAssignMatcher.find();
-		if (varInitFound || varAssignFound) {
+		if (PatternsKit.findPattern(line, PatternsKit.validDecString) || PatternsKit.findPattern(line,
+																								 PatternsKit.validAssString)) {
 			VariableParser.mainVariableParser(line, curHash, fatherHash);
 			return true;
 		}
@@ -81,10 +75,8 @@ public class Block {
 
 	private void validateFormat(String line) throws VariableException, StructureException {
 		if (!isMethod) {
-			Pattern conditionPattern = Pattern.compile("\\((.+)\\)");
-			Matcher conditionMatcher = conditionPattern.matcher(line);
-			boolean conditionFound = conditionMatcher.find();
-			if(!conditionFound){
+			Matcher conditionMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.conditionParenString);
+			if(conditionMatcher == null){
 				throw new IllegalConditionStructure();
 			}
 			String conditions = conditionMatcher.group(1);
@@ -100,10 +92,9 @@ public class Block {
 	}
 
 	private void methodFormatValidate(String line) throws StructureException, VariableException {
-		Pattern allParamsPattern = Pattern.compile("\\(([\\w\\s,]*)\\)");
-		Matcher allParamMatcher = allParamsPattern.matcher(line);
-		boolean allParamFound = allParamMatcher.find();
-		if (!allParamFound) {
+		Matcher allParamMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.methodParenString);
+
+		if (allParamMatcher == null) {
 			throw new InvalidMethodStructureException();
 		}
 		String allParams = allParamMatcher.group(1).trim();
@@ -112,12 +103,9 @@ public class Block {
 		}
 		String[] eachParam = allParams.split(",", -1);
 		for (String s : eachParam) {
-			Pattern paramListPattern = Pattern.compile("\\s*(final\\s)?\\s*" +
-													   "(int|boolean|char|double|String)" +
-													   "\\s+([\\w]+)\\s*");
-			Matcher paramListMatcher = paramListPattern.matcher(s);
-			boolean paramFound = paramListMatcher.matches();
-			if (!paramFound) {
+			Matcher paramListMatcher = PatternsKit.returnMatchesMatcher(s, PatternsKit.paramListString);
+
+			if (paramListMatcher == null) {
 				throw new InvalidMethodStructureException();
 			}
 			String varName = paramListMatcher.group(3);
