@@ -3,7 +3,7 @@ package oop.ex6.variables;
 /**
  * implements the FinalAssignmentException exception that extends VariableException
  */
-public class FinalAssignmentException extends VariableException{
+public class FinalAssignmentException extends VariableException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class FinalAssignmentException extends VariableException{
 	/**
 	 * constructor
 	 */
-	FinalAssignmentException(){
+	FinalAssignmentException() {
 		super(ERROR_MESSAGE);
 	}
 }

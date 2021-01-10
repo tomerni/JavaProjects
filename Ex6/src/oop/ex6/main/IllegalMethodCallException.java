@@ -14,7 +14,7 @@ public class IllegalMethodCallException extends MethodException {
 	/**
 	 * constructor
 	 */
-	IllegalMethodCallException(){
+	IllegalMethodCallException() {
 		super(ERROR_MESSAGE);
 	}
 }

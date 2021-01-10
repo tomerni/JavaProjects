@@ -3,7 +3,7 @@ package oop.ex6.variables;
 /**
  * implements the IllegalTypeNameException exception that extends VariableException
  */
-public class IllegalTypeNameException extends VariableException{
+public class IllegalTypeNameException extends VariableException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class IllegalTypeNameException extends VariableException{
 	/**
 	 * constructor
 	 */
-	IllegalTypeNameException(){
+	IllegalTypeNameException() {
 		super(ERROR_MESSAGE);
 	}
 }

@@ -3,7 +3,7 @@ package oop.ex6.main;
 /**
  * implements the InvalidLineStructureException exception that extends StructureException
  */
-public class InvalidLineStructureException  extends StructureException{
+public class InvalidLineStructureException extends StructureException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class InvalidLineStructureException  extends StructureException{
 	/**
 	 * constructor
 	 */
-	InvalidLineStructureException(){
+	InvalidLineStructureException() {
 		super(ERROR_MESSAGE);
 	}
 

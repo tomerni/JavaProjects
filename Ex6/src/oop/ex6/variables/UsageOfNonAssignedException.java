@@ -3,7 +3,7 @@ package oop.ex6.variables;
 /**
  * implements the UsageOfNonAssignedException exception that extends VariableException
  */
-public class UsageOfNonAssignedException extends VariableException{
+public class UsageOfNonAssignedException extends VariableException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class UsageOfNonAssignedException extends VariableException{
 	/**
 	 * constructor
 	 */
-	UsageOfNonAssignedException(){
+	UsageOfNonAssignedException() {
 		super(ERROR_MESSAGE);
 	}
 }

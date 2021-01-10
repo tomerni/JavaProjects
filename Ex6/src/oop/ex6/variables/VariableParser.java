@@ -34,7 +34,7 @@ public class VariableParser {
 	 * @throws VariableException variable exception
 	 */
 	public static void mainVariableParser(String line, HashMap<String, String[]> curHash, HashMap<String
-			, String[]> fatherHash) throws VariableException{
+			, String[]> fatherHash) throws VariableException {
 		Matcher finalMatcher = PatternsKit.finalString.matcher(line);
 		boolean finalFound = finalMatcher.find();
 		if (finalFound) {
@@ -63,11 +63,12 @@ public class VariableParser {
 	 * handles declaration lines
 	 */
 	private static void decParser(String line, String type, HashMap<String, String[]> curHash,
-								  HashMap<String, String[]> fatherHash, String isFinal) throws VariableException{
+								  HashMap<String, String[]> fatherHash, String isFinal)
+			throws VariableException {
 		Type valType = TypesFactory.createTypes(type);
 		String[] spiltString = line.split(PARAMS_DELIMITER, -1);
 		for (String s : spiltString) {
-			if(s.isEmpty()){
+			if (s.isEmpty()) {
 				throw new VariableStructureException();
 			}
 			if (s.contains(EQUALS)) {
@@ -86,7 +87,7 @@ public class VariableParser {
 					throw new FinalAssignmentException();
 				}
 				String name = s.trim();
-				valType.nameVerifier(name, curHash,fatherHash, true);
+				valType.nameVerifier(name, curHash, fatherHash, true);
 				String[] varArray = {valType.getTypeName(), FALSE, isFinal};
 				curHash.put(name, varArray);
 			}
@@ -105,12 +106,12 @@ public class VariableParser {
 		String name = splitLine[NAME_INDEX].trim();
 		String value = splitLine[VALUE_INDEX].substring(0, splitLine[1].length() - 1).trim();
 		HashMap<String, String[]> foundHash;
-		if (curHash.containsKey(name)){
+		if (curHash.containsKey(name)) {
 			foundHash = curHash;
-		} else{
-			if(fatherHash.containsKey(name)){
+		} else {
+			if (fatherHash.containsKey(name)) {
 				foundHash = fatherHash;
-			} else{
+			} else {
 				throw new IllegalVarNameException();
 			}
 		}

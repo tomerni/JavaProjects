@@ -67,28 +67,27 @@ public class Block {
 		validateFormat(iter.next());
 		while (iter.hasNext()) {
 			String line = iter.next().trim();
-//			if (parseVariables(line)) {
-//				continue;
-//			}
+			if (parseVariables(line)) {
+				continue;
+			}
 			if (PatternsKit.matchPattern(line, PatternsKit.ifWhileString)) {
 				HashMap<String, String[]> innerBlockHash = new HashMap<>();
 				innerBlockHash.putAll(fatherHash);
 				innerBlockHash.putAll(curHash);
 				ArrayList<String> remainingLines = new ArrayList<>();
 				iter.forEachRemaining(remainingLines::add);
-				remainingLines.add(0,line);
+				remainingLines.add(0, line);
 				Block innerBlock = new Block(remainingLines, innerBlockHash, false);
 				scopeLines = innerBlock.parseScope();
 				iter = scopeLines.iterator();
 				continue;
 			}
-			if (parseVariables(line) || line.matches(RETURN_REGEX)|| MethodCallParser.methodCallParser(line
-					, GlobalParser.methodMap, curHash, fatherHash)) {
+			if (MethodCallParser.methodCallParser(line, GlobalParser.methodMap, curHash, fatherHash)) {
 				continue;
 			}
-//			if (line.matches(RETURN_REGEX)) {
-//				continue;
-//			}
+			if (line.matches(RETURN_REGEX)) {
+				continue;
+			}
 			if (line.equals(METHOD_CLOSING)) {
 				break;
 			}
@@ -104,7 +103,7 @@ public class Block {
 	 */
 	private boolean parseVariables(String line) throws VariableException {
 		if (PatternsKit.findPattern(line, PatternsKit.validDecString) ||
-			PatternsKit.findPattern(line,PatternsKit.validAssString)) {
+			PatternsKit.findPattern(line, PatternsKit.validAssString)) {
 			VariableParser.mainVariableParser(line, curHash, fatherHash);
 			return true;
 		}
@@ -117,7 +116,7 @@ public class Block {
 	private void validateFormat(String line) throws VariableException, StructureException {
 		if (!isMethod) {
 			Matcher conditionMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.conditionParenString);
-			if(conditionMatcher == null){
+			if (conditionMatcher == null) {
 				throw new IllegalConditionStructure();
 			}
 			String conditions = conditionMatcher.group(1);
@@ -137,7 +136,6 @@ public class Block {
 	 */
 	private void methodFormatValidate(String line) throws StructureException, VariableException {
 		Matcher allParamMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.methodParenString);
-
 		if (allParamMatcher == null) {
 			throw new InvalidMethodStructureException();
 		}
@@ -148,12 +146,11 @@ public class Block {
 		String[] eachParam = allParams.split(PARAMS_DELIMITER, -1);
 		for (String s : eachParam) {
 			Matcher paramListMatcher = PatternsKit.returnMatchesMatcher(s, PatternsKit.paramListString);
-
 			if (paramListMatcher == null) {
 				throw new InvalidMethodStructureException();
 			}
 			String varName = paramListMatcher.group(NAME_INDEX);
-			if(curHash.containsKey(varName)){
+			if (curHash.containsKey(varName)) {
 				throw new IllegalVarNameException();
 			}
 			String isFinal = TRUE;

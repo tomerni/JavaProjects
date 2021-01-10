@@ -3,7 +3,7 @@ package oop.ex6.variables;
 /**
  * implements the VariableStructureException exception that extends VariableException
  */
-public class VariableStructureException extends VariableException{
+public class VariableStructureException extends VariableException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class VariableStructureException extends VariableException{
 	/**
 	 * constructor
 	 */
-	VariableStructureException(){
+	VariableStructureException() {
 		super(ERROR_MESSAGE);
 	}
 

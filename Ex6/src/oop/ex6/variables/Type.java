@@ -33,13 +33,12 @@ public interface Type {
 	 */
 	default void nameVerifier(String name, HashMap<String, String[]> curHash,
 							  HashMap<String, String[]> fatherHash, boolean isDec) throws VariableException {
-		if (PatternsKit.matchPattern(name, PatternsKit.validNameString)) {
-			throw new IllegalVarNameException();
+		if (PatternsKit.matchPattern(name, PatternsKit.validNameString) &&
+			((!curHash.containsKey(name) && isDec) || (curHash.containsKey(name) && !isDec) ||
+			 (!curHash.containsKey(name) && !isDec && fatherHash.containsKey(name)))) {
+			return;
 		}
-		if ((!curHash.containsKey(name) && isDec) || (curHash.containsKey(name) && !isDec) ||
-			(!curHash.containsKey(name) && !isDec && fatherHash.containsKey(name))) {
-			throw new DuplicateVariableException();
-		}
+		throw new IllegalVarNameException();
 	}
 
 	/**
@@ -56,6 +55,7 @@ public interface Type {
 	 * checks if the given value is already assigned
 	 * @param value the given value
 	 * @param curHash the current HashMap of the scope
+	 * @return true if the the var is assigned, false otherwise
 	 */
 	default boolean searchForAssignedValue(String value, HashMap<String, String[]> curHash) {
 		if (curHash.containsKey(value)) {
@@ -69,8 +69,8 @@ public interface Type {
 	 * @param value the given value
 	 * @param curHash the current HashMap of the scope
 	 * @param fatherHash the father's scope HashMap
-	 * @throws VariableException invalid variable exception
 	 * @return the name of the type of the given value
+	 * @throws VariableException invalid variable exception
 	 */
 	default String searchForType(String value, HashMap<String, String[]> curHash,
 								 HashMap<String, String[]> fatherHash) throws VariableException {

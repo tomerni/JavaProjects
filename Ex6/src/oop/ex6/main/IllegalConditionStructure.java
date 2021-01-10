@@ -14,7 +14,7 @@ public class IllegalConditionStructure extends StructureException {
 	/**
 	 * constructor
 	 */
-	IllegalConditionStructure(){
+	IllegalConditionStructure() {
 		super(ERROR_MESSAGE);
 	}
 }

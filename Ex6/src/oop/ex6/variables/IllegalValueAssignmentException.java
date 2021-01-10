@@ -3,7 +3,7 @@ package oop.ex6.variables;
 /**
  * implements the IllegalValueAssignmentException exception that extends VariableException
  */
-public class IllegalValueAssignmentException extends VariableException{
+public class IllegalValueAssignmentException extends VariableException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;

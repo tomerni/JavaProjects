@@ -3,7 +3,7 @@ package oop.ex6.main;
 /**
  * implements the IllegalArgumentsException exception that extends MethodException
  */
-public class IllegalArgumentsException extends MethodException{
+public class IllegalArgumentsException extends MethodException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class IllegalArgumentsException extends MethodException{
 	/**
 	 * constructor
 	 */
-	IllegalArgumentsException(){
+	IllegalArgumentsException() {
 		super(ERROR_MESSAGE);
 	}
 

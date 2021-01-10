@@ -34,9 +34,9 @@ public class GlobalParser {
 
 	private final static String RETURN_REGEX = "return\\s*;";
 
-	private final static String VALID_COMMENT ="//";
+	private final static String VALID_COMMENT = "//";
 
-	private final static String VOID ="void";
+	private final static String VOID = "void";
 
 	private final static String PARAMS_DELIMITER = ",";
 
@@ -145,7 +145,7 @@ public class GlobalParser {
 	 */
 	private void signatureVerifier(String line) throws StructureException, VariableException {
 		Matcher voidMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.voidString);
-		if(!(voidMatcher == null)) {
+		if (!(voidMatcher == null)) {
 			line = line.substring(voidMatcher.end());
 		}
 		Matcher nameMatcher = PatternsKit.returnFindMatcher(line, PatternsKit.methodNameString);
@@ -162,7 +162,7 @@ public class GlobalParser {
 	}
 
 	/*
-	 * return a list ot the types in the method decleration
+	 * return a list ot the types in the method declaration
 	 */
 	private ArrayList<Type> parameterListVerifier(String listOfParameters)
 			throws StructureException, VariableException {
@@ -183,7 +183,9 @@ public class GlobalParser {
 				throw new InvalidMethodStructureException();
 			}
 			Type paramType = TypesFactory.createTypes(paramListMatcher.group(TYPE_INDEX));
-			paramType.nameVerifier(paramListMatcher.group(NAME_INDEX), new HashMap<>(), new HashMap<>(), true);
+			paramType
+					.nameVerifier(paramListMatcher.group(NAME_INDEX), new HashMap<>(), new HashMap<>(),
+								  true);
 			typesOfParameters.add(paramType);
 		}
 		return typesOfParameters;

@@ -14,7 +14,7 @@ public class IllegalVarNameException extends VariableException {
 	/**
 	 * constructor
 	 */
-	public IllegalVarNameException(){
+	public IllegalVarNameException() {
 		super(ERROR_MESSAGE);
 	}
 }

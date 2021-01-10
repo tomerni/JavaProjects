@@ -3,7 +3,7 @@ package oop.ex6.main;
 /**
  * implements the InvalidMethodStructureException exception that extends StructureException
  */
-public class InvalidMethodStructureException extends StructureException{
+public class InvalidMethodStructureException extends StructureException {
 
 	// for serialization
 	private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class InvalidMethodStructureException extends StructureException{
 	/**
 	 * constructor
 	 */
-	InvalidMethodStructureException(){
+	InvalidMethodStructureException() {
 		super(ERROR_MESSAGE);
 	}
 }
