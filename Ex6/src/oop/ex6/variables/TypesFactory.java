@@ -2,15 +2,23 @@ package oop.ex6.variables;
 
 public class TypesFactory {
 
+    private final static String BOOLEAN = "boolean";
+
+    private final static String INT = "int";
+
+    private final static String DOUBLE = "double";
+
+    private final static String STRING = "String";
+
     public static Type createTypes(String type) {
         switch (type){
-            case "int":
+            case INT:
                 return new IntType();
-            case "String":
+            case STRING:
                 return new StringType();
-            case "double":
+            case DOUBLE:
                 return new DoubleType();
-            case "boolean":
+            case BOOLEAN:
                 return new BooleanType();
             default:
                 return new CharType();

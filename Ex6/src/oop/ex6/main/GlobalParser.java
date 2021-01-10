@@ -23,6 +23,24 @@ public class GlobalParser {
 
 	private final Scanner scanner;
 
+	private final static String INVALID_COMMENT = ".+//.*";
+
+	private final static String RETURN_REGEX = "return\\s*;";
+
+	private final static String VALID_COMMENT ="//";
+
+	private final static String VOID ="void";
+
+	private final static String PARAMS_DELIMITER = ",";
+
+	private final static int TYPE_INDEX = 2;
+
+	private final static int NAME_INDEX = 3;
+
+	private final static String METHOD_CLOSING = "}";
+
+	private final static String METHOD_OPENING = "{";
+
 
 	GlobalParser(String fileName) throws FileNotFoundException {
 		methodMap = new HashMap<>();
@@ -34,11 +52,11 @@ public class GlobalParser {
 	public void fileParse() throws StructureException, VariableException, MethodException {
 		while (scanner.hasNext()) {
 			String line = (scanner.nextLine());
-			if (line.matches(".+//.*")) {
+			if (line.matches(INVALID_COMMENT)) {
 				throw new InvalidLineStructureException();
 			}
 			line = line.trim();
-			if (line.isEmpty() || line.startsWith("//")) {
+			if (line.isEmpty() || line.startsWith(VALID_COMMENT)) {
 				continue;
 			}
 			if (!parseGlobalVariables(line)) {
@@ -68,24 +86,24 @@ public class GlobalParser {
 			if (!scanner.hasNext()) {
 				throw new InvalidMethodStructureException();
 			}
-			if (line.matches(".+//.*")) {
+			if (line.matches(INVALID_COMMENT)) {
 				throw new InvalidLineStructureException();
 			}
 			line = scanner.nextLine().trim();
-			if (line.isEmpty() || line.startsWith("//")) {
+			if (line.isEmpty() || line.startsWith(VALID_COMMENT)) {
 				continue;
 			}
-			if (line.endsWith("{")) {
+			if (line.endsWith(METHOD_OPENING)) {
 				parenthesis++;
-			} else if (line.equals("}")) {
+			} else if (line.equals(METHOD_CLOSING)) {
 				parenthesis--;
-			} else if (line.startsWith("void")) {
+			} else if (line.startsWith(VOID)) {
 				throw new InvalidMethodStructureException();
 			}
 			curMethod.add(line);
 		}
 		String hasReturn = curMethod.get(curMethod.size() - 2);
-		if (hasReturn.matches("return\\s*;")) {
+		if (hasReturn.matches(RETURN_REGEX)) {
 			methodsImplementation.add(curMethod);
 			return;
 		}
@@ -132,15 +150,15 @@ public class GlobalParser {
 		if (allParams.isEmpty()) {
 			return new ArrayList<>();
 		}
-		String[] eachParam = allParams.split(",", -1);
+		String[] eachParam = allParams.split(PARAMS_DELIMITER, -1);
 		ArrayList<Type> typesOfParameters = new ArrayList<>();
 		for (String s : eachParam) {
 			Matcher paramListMatcher = PatternsKit.returnFindMatcher(s, PatternsKit.paramListString);
 			if (paramListMatcher == null) {
 				throw new InvalidMethodStructureException();
 			}
-			Type paramType = TypesFactory.createTypes(paramListMatcher.group(2));
-			paramType.nameVerifier(paramListMatcher.group(3), new HashMap<>(), new HashMap<>(), true);
+			Type paramType = TypesFactory.createTypes(paramListMatcher.group(TYPE_INDEX));
+			paramType.nameVerifier(paramListMatcher.group(NAME_INDEX), new HashMap<>(), new HashMap<>(), true);
 			typesOfParameters.add(paramType);
 		}
 		return typesOfParameters;

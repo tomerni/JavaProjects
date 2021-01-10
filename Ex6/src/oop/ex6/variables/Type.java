@@ -7,7 +7,22 @@ import java.util.HashMap;
 
 public interface Type {
 
-	// TODO: Implement a class for each pattern
+
+	String TRUE = "true";
+
+	String FALSE = "false";
+
+	String BOOLEAN = "boolean";
+
+	String INT = "int";
+
+	String DOUBLE = "double";
+
+	String CHAR = "char";
+
+	String STRING = "String";
+
+
 	default void nameVerifier(String name, HashMap<String, String[]> curHash,
 							  HashMap<String, String[]> fatherHash, boolean isDec) throws VariableException {
 		if (PatternsKit.matchPattern(name, PatternsKit.validNameString) && ((!curHash.containsKey(name) && isDec) || (curHash.containsKey(name) && !isDec) ||
@@ -22,7 +37,7 @@ public interface Type {
 
 	default boolean searchForAssignedValue(String value, HashMap<String, String[]> curHash) {
 		if (curHash.containsKey(value)) {
-			return (curHash.get(value)[1].equals("true"));
+			return (curHash.get(value)[1].equals(TRUE));
 		}
 		return false;
 	}

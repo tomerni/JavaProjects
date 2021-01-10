@@ -11,6 +11,20 @@ public class VariableParser {
 
 	private final static String FALSE = "false";
 
+	private final static String PARAMS_DELIMITER = ",";
+
+	private final static String EQUALS = "=";
+
+	private final static int NAME_INDEX = 0;
+
+	private final static int VALUE_INDEX = 1;
+
+	private final static int ASSIGNMENT_LENGTH = 2;
+
+	private final static int FINAL_INDEX = 2;
+
+
+
 	public static void mainVariableParser(String line, HashMap<String, String[]> curHash, HashMap<String
 			, String[]> fatherHash) throws VariableException{
 		Matcher finalMatcher = PatternsKit.finalString.matcher(line);
@@ -29,7 +43,7 @@ public class VariableParser {
 				decParser(line, type, curHash, fatherHash, FALSE);
 			}
 		} else {
-			if (!line.contains("=") && finalFound) {
+			if (!line.contains(EQUALS) && finalFound) {
 				throw new FinalAssignmentException();
 			} else {
 				assignmentParser(line, curHash, fatherHash);
@@ -40,18 +54,18 @@ public class VariableParser {
 	private static void decParser(String line, String type, HashMap<String, String[]> curHash,
 								  HashMap<String, String[]> fatherHash, String isFinal) throws VariableException{
 		Type valType = TypesFactory.createTypes(type);
-		String[] spiltString = line.split(",", -1);
+		String[] spiltString = line.split(PARAMS_DELIMITER, -1);
 		for (String s : spiltString) {
 			if(s.isEmpty()){
 				throw new VariableStructureException();
 			}
-			if (s.contains("=")) {
-				String[] splitLine = s.split("=");
-				if (splitLine.length != 2) {
+			if (s.contains(EQUALS)) {
+				String[] splitLine = s.split(EQUALS);
+				if (splitLine.length != ASSIGNMENT_LENGTH) {
 					throw new VariableStructureException();
 				}
-				String name = splitLine[0].trim();
-				String value = splitLine[1].trim();
+				String name = splitLine[NAME_INDEX].trim();
+				String value = splitLine[VALUE_INDEX].trim();
 				valType.nameVerifier(name, curHash, fatherHash, true);
 				valType.valueVerifier(value, curHash, fatherHash);
 				String[] varArray = {valType.getTypeName(), TRUE, isFinal};
@@ -70,12 +84,12 @@ public class VariableParser {
 
 	private static void assignmentParser(String line, HashMap<String, String[]> curHash, HashMap<String,
 			String[]> fatherHash) throws VariableException {
-		String[] splitLine = line.split("=");
-		if (splitLine.length != 2) {
+		String[] splitLine = line.split(EQUALS);
+		if (splitLine.length != ASSIGNMENT_LENGTH) {
 			throw new VariableStructureException();
 		}
-		String name = splitLine[0].trim();
-		String value = splitLine[1].substring(0, splitLine[1].length() - 1).trim();
+		String name = splitLine[NAME_INDEX].trim();
+		String value = splitLine[VALUE_INDEX].substring(0, splitLine[1].length() - 1).trim();
 		HashMap<String, String[]> foundHash;
 		if (curHash.containsKey(name)){
 			foundHash = curHash;
@@ -87,13 +101,13 @@ public class VariableParser {
 			}
 		}
 		String type = foundHash.get(name)[0];
-		String isFinal = foundHash.get(name)[2];
+		String isFinal = foundHash.get(name)[FINAL_INDEX];
 		if (isFinal.equals(TRUE)) {
 			throw new FinalAssignmentException();
 		}
 		Type valType = TypesFactory.createTypes(type);
 		valType.valueVerifier(value, curHash, fatherHash);
-		String[] varArray = {foundHash.get(name)[0], TRUE, foundHash.get(name)[2]};
+		String[] varArray = {foundHash.get(name)[NAME_INDEX], TRUE, foundHash.get(name)[FINAL_INDEX]};
 		foundHash.put(name, varArray);
 	}
 

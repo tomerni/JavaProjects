@@ -18,6 +18,25 @@ public class Block {
 
 	private final boolean isMethod;
 
+	private final static String TRUE = "true";
+
+	private final static String FALSE = "false";
+
+	private final static String RETURN_REGEX = "return\\s*;";
+
+	private final static String SEPARATOR_REGEX = "&&|\\|\\|";
+
+	private final static String PARAMS_DELIMITER = ",";
+
+	private final static String METHOD_CLOSING = "}";
+
+	private final static int FINAL_INDEX = 1;
+
+	private final static int TYPE_INDEX = 2;
+
+	private final static int NAME_INDEX = 3;
+
+
 	Block(ArrayList<String> scopeLines, HashMap<String, String[]> fatherHash, boolean isMethod) {
 		curHash = new HashMap<>();
 		this.fatherHash = fatherHash;
@@ -35,7 +54,7 @@ public class Block {
 				continue;
 			}
 
-			if ((line.startsWith("if ") || line.startsWith("if(") || line.startsWith("while ") || line.startsWith("while(")) && line.endsWith("{")) {
+			if (PatternsKit.matchPattern(line, PatternsKit.ifWhileString)) {
 				HashMap<String, String[]> innerBlockHash = new HashMap<>();
 				innerBlockHash.putAll(fatherHash);
 				innerBlockHash.putAll(curHash);
@@ -50,10 +69,10 @@ public class Block {
 			if (MethodCallParser.methodCallParser(line, GlobalParser.methodMap, curHash, fatherHash)) {
 				continue;
 			}
-			if (line.matches("return\\s*;")) {
+			if (line.matches(RETURN_REGEX)) {
 				continue;
 			}
-			if (line.equals("}")) {
+			if (line.equals(METHOD_CLOSING)) {
 				break;
 			}
 			throw new InvalidLineStructureException();
@@ -80,7 +99,7 @@ public class Block {
 				throw new IllegalConditionStructure();
 			}
 			String conditions = conditionMatcher.group(1);
-			String[] eachCondition = conditions.split("&&|\\|\\|", -1);
+			String[] eachCondition = conditions.split(SEPARATOR_REGEX, -1);
 			Type booleanType = new BooleanType();
 			for (String s : eachCondition) {
 				String currentValue = s.trim();
@@ -101,22 +120,22 @@ public class Block {
 		if (allParams.isEmpty()) {
 			return;
 		}
-		String[] eachParam = allParams.split(",", -1);
+		String[] eachParam = allParams.split(PARAMS_DELIMITER, -1);
 		for (String s : eachParam) {
 			Matcher paramListMatcher = PatternsKit.returnMatchesMatcher(s, PatternsKit.paramListString);
 
 			if (paramListMatcher == null) {
 				throw new InvalidMethodStructureException();
 			}
-			String varName = paramListMatcher.group(3);
+			String varName = paramListMatcher.group(NAME_INDEX);
 			if(curHash.containsKey(varName)){
 				throw new IllegalVarNameException();
 			}
-			String isFinal = "true";
-			if (paramListMatcher.group(1) == null) {
-				isFinal = "false";
+			String isFinal = TRUE;
+			if (paramListMatcher.group(FINAL_INDEX) == null) {
+				isFinal = FALSE;
 			}
-			String[] varArray = {paramListMatcher.group(2), "true", isFinal};
+			String[] varArray = {paramListMatcher.group(TYPE_INDEX), TRUE, isFinal};
 			curHash.put(varName, varArray);
 		}
 	}

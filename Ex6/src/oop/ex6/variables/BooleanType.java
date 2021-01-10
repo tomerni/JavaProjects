@@ -7,9 +7,6 @@ import java.util.HashMap;
 
 public class BooleanType implements Type {
 
-    private final static String TRUE = "true";
-
-    private final static String FALSE = "false";
 
     @Override
     public void valueVerifier(String value, HashMap<String, String[]> curHash,
@@ -21,14 +18,14 @@ public class BooleanType implements Type {
             return;
         }
         String assignedValueType = searchForType(value, curHash, fatherHash);
-        if(!(assignedValueType.equals("boolean") || assignedValueType.equals("int") ||
-                assignedValueType.equals("double"))){
+        if(!(assignedValueType.equals(BOOLEAN) || assignedValueType.equals(INT) ||
+                assignedValueType.equals(DOUBLE))){
             throw new IllegalValueAssignmentException();
         }
     }
 
     @Override
     public String getTypeName() {
-        return "boolean";
+        return BOOLEAN;
     }
 }
