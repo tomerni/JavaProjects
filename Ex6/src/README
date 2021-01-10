@@ -1,0 +1,191 @@
+tomerni, heli.1998
+
+=============================
+=      File description     =
+=============================
+main:
+    Sjavac.java
+    GlobalParser.java
+    Block.java
+    MethodCallParser.java
+    IllegalArgumentsException.java
+    IllegalEndOfLineException.java
+    IllegalConditionStructure.java
+    IllegalMethodCallException.java
+    InvalidLineException.java
+    InvalidMethodStructure.java
+    MethodException.java
+    StructureException.java
+    Scope.java
+variables:
+    Type.java
+    BooleanType.java
+    CharType.java
+    DoubleType.java
+    IntType.java
+    StringType.java
+    TypesFactory.java
+    VariableParser.java
+    DuplicateVariableException.java
+    FinalAssignmentException.java
+    IllegalValueAssignmentException.java
+    IllegalVarNameException.java
+    IllegalTypeNameException.java
+    UsageOfNonAssignedException.java
+    VariableException.java
+    VariableStructureException.java
+
+
+
+=============================
+=          Design           =
+=============================
+variables:
+The variables package is responsible for handling any statement in the input file that is related with a
+variable assignment or initialization. The package contains the file Type.java which is an Interface, and a
+class for each Type that is supported by s-java. Each such type-class implements the Type interface. The Type
+interface implements some default methods that are responsible for validating the names of the variables using
+different regular expressions, and verifying that they have been declared before they are assigned. Each
+variable-class also implements a method that validates the values that are assigned to the variables,
+according to their individual type.
+The variables package also holds the TypeFactory, which has a single method, createType, and is of course
+responsible for creating the type-instances (e.g booleanType, doubleClass and so on). This method is called
+when a variable-declaration or assignment line is encountered in the input file, and this way an instance of
+the type is created. Later, the verification methods of this instance are executed on the given input-line.
+Finally, the variables package contains the VariableException file, and some other throwable concrete classes
+extending it, and whose instances are thrown in case of different variable- related errors, more on that in
+the Error handling section.
+
+
+main:
+The main file of this package, and of the program in general, is the Sjavac.java file, which is simply
+responsible for receiving the input file and passing it on for the parsing classes. This process is done
+inside a "try" block as most of the files called from there might throw exceptions. The main method deals with
+two main types of errors, IO errors (in case of file-opening problems), and invalid or illegal usage of the
+s-java language and syntax. In those cases, the method emits 2 or 1, respectively. In case of no-errors at
+all, the method emits 0 to System.out to indicate a successful verification.
+
+scopes: Each scope in the input file will eventually be defined and represented as a HashMap holding its local
+variables and arguments, and a hashmap holding its outer scope's local variables and arguments, as these are
+the variables that it is allowed to use. When encountering a new scope, i.e an "if" or "while" block, or a
+method, a new hashMap is created, holding it's parameters, and the outers scope hashmap is passed to its
+object field.
+
+GlobalParser.java:
+The GlobalParser.java performs the initial parsing of the input file. It initializes a hashmap for the global
+scope, and then uses a Scanner object to iterate over the input file. This parsing collects each method's line
+into its own ArrayList, and each such ArrayList, representing a method, is then individually parsed. In this
+parsing, Each line is analyzed using regular expressions. First, the overall format and structure of the line
+are examined. If its structure is illegal or does not exist in java, an Error is thrown (more on that later).
+After that, the lines of each method are iterated and each line defining a new scope(if or while) or a method
+call or a variable assignment/declaration is used to create a new object that is responsible for handling
+this line. This way the program is maintaining the principle of modularity, as each kind of statement is
+handled individually and according to its own restrictions and rules. The content of the line is examined, e.g
+the validness of the values, the existence of the called methods and so on.
+The GlobalParser.java implements the Scope.java Interface,so it can use the magic numbers defined in it.
+
+Block.java: A new Block object is constructed for each new method and when a new if \ while block is met
+inside a method. As mentioned before, each block is defined with two hashmaps, one holding the currents block
+variables and one holding the contents of its outer block. Before and while creating the
+object, all of the parameters are verified - If it's an "if" or "while" block, the conditions are checked.If
+it is a method call, its existence and number of arguments are validated. In any case, the blocks parsing is
+recursive - when a new block is encountered, the method calls itself with the rest of its lines. When an inner
+scope parsing is finished, the method returns the rest of the lines (those that are not included in the inner
+scope) and goes back in the recursion calls with the current remaining lines. This way, the recursive call
+does not interrupt the natural flow of the parsed method and we ensure that each scope is only handling its
+own code lines.
+The Block.java class implements the Scope.java Interface, so it can use the magic numbers defined in it.
+
+
+
+MethodCallParser.java: This class is using two methods that are simply verifying the existence of the called
+method and that the call is legal in terms of the number and types of the arguments passed to it.
+
+PatternsKit.java: This class holds static members, each representing one of the patterns used in the different
+classes. It also implements finding and matching lines passed as arguments. This makes the program more
+efficient, as each pattern is only compiled ones and reused over and over. This way we also maintain the
+modularity principle, by having a class that is responsible for all of the creations of the patterns and is
+logically separated from the rest of the program.
+
+=============================
+=    Answers to questions   =
+=============================
+
+Error handling:
+_______________
+The exception throwable classes are implemented each in the package it is thrown from, as they are logically
+connected to those packages. The only place in the program were the exceptions are caught, is the main method
+in Sjavac.java. The reason is that when an exception is thrown there is no reason to continue the running of
+the program, as we already know at this stage that the input is invalid. Therefore we can throw the
+exception up until the main method to finish the execution of the program.
+
+variables:
+The main exception class is VariableException.java. It is extended by all of the sub-classes that are
+describing different illegal variable declaring or assignments, such as declaring a variable of a type that is
+not supported in s-java, giving a variable an illegal name, assigning wrong values in the terms of types or
+using an un-initialized variable, and so on.
+
+main:
+The first main exception class is MethodException.java. It is extended by all of the sub-classes that are
+describing errors occurring in the context of method calls or implementations, such as calling a non-existing
+method, calling a method with the wrong number of arguments, and etc.
+The second main exception class is StructureException.java. It is extended by all of the sub-class that are
+describing invalid structures of methods, blocks, or statements, e.g not using ';' at the end of a statement,
+implementing a method without '{' or '}' where needed, or just simply when trying to execute some code that is
+not supported by s-java.
+
+
+Modification:
+_____________
+If we had to support new types in the language, we would have taken the following steps - First, implement a
+class, "(newTypeName)Type.java" that implements the Type Interface. Then, add their names to the group 1 of
+each of the three patterns that are responsible for checking type names, such as  "validTypeString". Finally,
+add a matching switch case to the TypeFactory. The fact that a small amount of light changes is needed
+indicates that the program is modular and made of independent classes, each is responsible for its own
+individual "mission"
+
+If we had to support different methods' types, we would implement an Interface called "MethodBlock", which is
+implemented by different classes, each is responsible for one of the possible returning types of methods.
+Right now, we only support void methods, but most of the Block.java methods are generic and could have been
+used for any other returning type. For that reason, we would use most of those methods in the methodBlock
+interface (with minor changes in the regex patterns). In each class implementing this interface, we would only
+explicitly implement the methods that check for the specific type validation, which means, verifying that the
+method actually returns a value of the the stated type.
+
+If we had to support classes, we would implement a package called "Project" that holds all of the classes we
+implemented in oop.ex6 package and also a class called "ClassParser", which is responsible for creating class-
+instances for each given input file. This implementation is analogical and has the same hierarchy as the
+GlobalParser.java file we have right now, but instead of parsing methods, we will parse each class separately.
+MoreOver, we will have save each method's name into its relevant hashmaps with the addition of its class name.
+Just as we saved a global method-hashmap in the global hashmap, we will also save all of the classes
+methods into a global methods-hashmap in the ClassParser class.
+
+
+Regular expressions:
+____________________
+Let's describe two of the most-used regular expression patterns in our code:
+
+variable assignment pattern:
+"^[\\w]+\\s*=\\s*[\\w]+\\s*;\\s*"
+This pattern verifies that the structure of the assignment is correct and is as the following: part 1 - any
+sequence of letters, digits and underscore ([\\w]) in length of at least one char (+ sign), and then any
+number of spaces. part 2 - the equation sign, "=" exactly ones and then any number of spaces. part 3 - same as
+part 1. part 4 - a ';' and any number of spaces before and after it.
+This regular expression validates the outline structure of an assignment- which simply has to be two
+expressions separated with the '=' sign. It is of course not enough for the whole assignment to be valid,
+because many other checks have to be done, such as verifying that the variable has been declared, that the
+assigned value is legal and meets the specific type requirements, and more. All of those are checked later in
+the program.
+
+if and while blocks pattern:
+"(if|while)\\s*\\(.*\\)\\s*\\{"
+This pattern verifies that the structure of a block ("if" or "while") is legal and is as the following: part
+1 - the word "if" or the word "while" (but not both). This is in fact a group, which helps us later specify
+which kind of scope it is by using group(1) method. part 2 - any number of white spaces and '('. part 3- any
+sequence of character. part 4- a ')' and any number of spaces, and then '{'.
+This regular expression validates the outline structure of an "if" or "while" block, which has to be: the kind
+of the block, round parenthesis with an expression inside, ending with a '{'. It is of course not enough for
+the whole block to be valid, because we still have to check that the expression inside the parenthesis is a
+valid condition, which can be a boolean expression, an int or a double. This is checked later in the code.
+
+In both examples, the division into parts is artificial and used for the explanations only.
