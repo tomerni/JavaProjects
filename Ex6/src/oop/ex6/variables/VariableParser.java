@@ -5,6 +5,9 @@ import oop.ex6.main.PatternsKit;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
+/**
+ * Class that responsible for parsing variable statements
+ */
 public class VariableParser {
 
 	private final static String TRUE = "true";
@@ -23,8 +26,13 @@ public class VariableParser {
 
 	private final static int FINAL_INDEX = 2;
 
-
-
+	/**
+	 * the main function which responsible for parsing the variable lines
+	 * @param line variable line
+	 * @param curHash the current scope's HashMap
+	 * @param fatherHash the scope's father HashMap
+	 * @throws VariableException variable exception
+	 */
 	public static void mainVariableParser(String line, HashMap<String, String[]> curHash, HashMap<String
 			, String[]> fatherHash) throws VariableException{
 		Matcher finalMatcher = PatternsKit.finalString.matcher(line);
@@ -51,6 +59,9 @@ public class VariableParser {
 		}
 	}
 
+	/*
+	 * handles declaration lines
+	 */
 	private static void decParser(String line, String type, HashMap<String, String[]> curHash,
 								  HashMap<String, String[]> fatherHash, String isFinal) throws VariableException{
 		Type valType = TypesFactory.createTypes(type);
@@ -82,6 +93,9 @@ public class VariableParser {
 		}
 	}
 
+	/*
+	 * handles assignment lines
+	 */
 	private static void assignmentParser(String line, HashMap<String, String[]> curHash, HashMap<String,
 			String[]> fatherHash) throws VariableException {
 		String[] splitLine = line.split(EQUALS);

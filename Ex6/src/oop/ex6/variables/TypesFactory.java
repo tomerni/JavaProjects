@@ -1,5 +1,8 @@
 package oop.ex6.variables;
 
+/**
+ * Factory class for types
+ */
 public class TypesFactory {
 
     private final static String BOOLEAN = "boolean";
@@ -10,6 +13,11 @@ public class TypesFactory {
 
     private final static String STRING = "String";
 
+    /**
+     * factory method for types
+     * @param type the given type
+     * @return the relevant Type object
+     */
     public static Type createTypes(String type) {
         switch (type){
             case INT:
