@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 /**
  * Class for the scopes in the file - methods, ifs and whiles
  */
-public class Block {
+public class Block implements Scope {
 
 	// HashMap with the scope's local variables
 	private final HashMap<String, String[]> fatherHash;
@@ -23,24 +23,6 @@ public class Block {
 
 	// flag the indicates if the scope is a method
 	private final boolean isMethod;
-
-	private final static String TRUE = "true";
-
-	private final static String FALSE = "false";
-
-	private final static String RETURN_REGEX = "return\\s*;";
-
-	private final static String SEPARATOR_REGEX = "&&|\\|\\|";
-
-	private final static String PARAMS_DELIMITER = ",";
-
-	private final static String METHOD_CLOSING = "}";
-
-	private final static int FINAL_INDEX = 1;
-
-	private final static int TYPE_INDEX = 2;
-
-	private final static int NAME_INDEX = 3;
 
 	/**
 	 * constructor

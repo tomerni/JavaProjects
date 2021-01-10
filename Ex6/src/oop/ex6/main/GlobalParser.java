@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 /**
  * Class that handles the global scope parsing
  */
-public class GlobalParser {
+public class GlobalParser implements Scope {
 
 	/** HashMap the stores the methods in the file */
 	public static HashMap<String, ArrayList<Type>> methodMap;
@@ -29,25 +29,6 @@ public class GlobalParser {
 
 	// The file's scanner
 	private final Scanner scanner;
-
-	private final static String INVALID_COMMENT = ".+//.*";
-
-	private final static String RETURN_REGEX = "return\\s*;";
-
-	private final static String VALID_COMMENT = "//";
-
-	private final static String VOID = "void";
-
-	private final static String PARAMS_DELIMITER = ",";
-
-	private final static int TYPE_INDEX = 2;
-
-	private final static int NAME_INDEX = 3;
-
-	private final static String METHOD_CLOSING = "}";
-
-	private final static String METHOD_OPENING = "{";
-
 
 	GlobalParser(String fileName) throws FileNotFoundException {
 		methodMap = new HashMap<>();
